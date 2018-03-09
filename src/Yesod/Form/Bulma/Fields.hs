@@ -5,18 +5,21 @@
 {-# LANGUAGE QuasiQuotes           #-}
 module Yesod.Form.Bulma.Fields where
 
-import           Control.Monad         (unless)
-import           Data.Maybe            (listToMaybe)
-import           Data.Text             (Text)
-import           Text.Shakespeare.I18N (RenderMessage, SomeMessage (..))
-import           Yesod.Core            (HandlerSite)
-import           Yesod.Core.Types      (HandlerT, WidgetT)
-import           Yesod.Core.Widget     (handlerToWidget, whamlet)
-import           Yesod.Form.Fields     (FormMessage (..), Option (..),
-                                        OptionList (..), Textarea (..),
-                                        optionsPairs)
-import           Yesod.Form.Functions  (parseHelper)
-import           Yesod.Form.Types      (Enctype (..), Field (..))
+import           Control.Monad            (unless)
+import           Data.Maybe               (listToMaybe)
+import           Data.Text                (Text)
+import           Data.Text.Encoding       (decodeUtf8With, encodeUtf8)
+import           Data.Text.Encoding.Error (lenientDecode)
+import qualified Text.Email.Validate      as Email
+import           Text.Shakespeare.I18N    (RenderMessage, SomeMessage (..))
+import           Yesod.Core               (HandlerSite)
+import           Yesod.Core.Types         (HandlerT, WidgetT)
+import           Yesod.Core.Widget        (handlerToWidget, whamlet)
+import           Yesod.Form.Fields        (FormMessage (..), Option (..),
+                                           OptionList (..), Textarea (..),
+                                           optionsPairs)
+import           Yesod.Form.Functions     (parseHelper)
+import           Yesod.Form.Types         (Enctype (..), Field (..))
 
 -- | Creates a input with @type="text"@.
 textField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Text
@@ -28,6 +31,21 @@ textField = Field
         |]
     , fieldEnctype = UrlEncoded
     }
+
+-- | Creates an input with @type="email"@. Yesod will validate the email's correctness according to RFC5322 and canonicalize it by removing comments and whitespace (see "Text.Email.Validate").
+emailField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Text
+emailField = Field
+  { fieldParse = parseHelper $
+    \s ->
+      case Email.canonicalizeEmail $ encodeUtf8 s of
+        Just e  -> Right $ decodeUtf8With lenientDecode e
+        Nothing -> Left $ MsgInvalidEmail s
+  , fieldView = \theId name attrs val isReq ->
+      [whamlet| $newline never
+        <input id="#{theId}" .input name="#{name}" *{attrs} type="email" :isReq:required="" value="#{either id id val}">
+      |]
+  , fieldEnctype = UrlEncoded
+  }
 
 -- | Creates a @\<textarea>@ tag whose returned value is wrapped in a 'Textarea'; see 'Textarea' for details.
 textareaField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Textarea

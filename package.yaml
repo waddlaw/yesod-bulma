@@ -18,6 +18,7 @@ dependencies:
 - yesod-form
 - shakespeare
 - yesod-core
+- email-validate
 
 library:
   source-dirs: src
