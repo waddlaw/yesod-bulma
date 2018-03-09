@@ -1,3 +1,4 @@
+{-# LANGUAGE ExplicitForAll        #-}
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
@@ -8,11 +9,25 @@ import           Control.Monad         (unless)
 import           Data.Maybe            (listToMaybe)
 import           Data.Text             (Text)
 import           Text.Shakespeare.I18N (RenderMessage, SomeMessage (..))
+import           Yesod.Core            (HandlerSite)
 import           Yesod.Core.Types      (HandlerT, WidgetT)
 import           Yesod.Core.Widget     (handlerToWidget, whamlet)
 import           Yesod.Form.Fields     (FormMessage (..), Option (..),
-                                        OptionList (..), optionsPairs)
+                                        OptionList (..), Textarea (..),
+                                        optionsPairs)
+import           Yesod.Form.Functions  (parseHelper)
 import           Yesod.Form.Types      (Enctype (..), Field (..))
+
+-- | Creates a @\<textarea>@ tag whose returned value is wrapped in a 'Textarea'; see 'Textarea' for details.
+textareaField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Textarea
+textareaField = Field
+    { fieldParse = parseHelper $ Right . Textarea
+    , fieldView = \theId name attrs val isReq ->
+        [whamlet| $newline never
+          <textarea id="#{theId}" .textarea name="#{name}" :isReq:required="" *{attrs}>#{either id unTextarea val}
+        |]
+    , fieldEnctype = UrlEncoded
+    }
 
 -- | Creates a @\<select>@ tag for selecting one option. Example usage:
 --

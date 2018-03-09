@@ -18,13 +18,15 @@ mkYesod "App" [parseRoutes|
 
 instance Yesod App
 
-instance RenderMessage App FormMessage
+instance RenderMessage App FormMessage where
+  renderMessage _ _ = defaultFormMessage
 
 data Basic = Basic
   { name     :: Text
   , username :: Text
   , email    :: Text
   , subject  :: Text
+  , message :: Textarea
   }
 
 basicForm :: Html -> MForm Handler (FormResult Basic, Widget)
@@ -32,7 +34,8 @@ basicForm = renderBulma BulmaBasicForm $ Basic
   <$> areq textField ("Text input" `withPlaceholder` bfs "Name") Nothing
   <*> areq textField ("bulma" `withPlaceholder` bfs "Username") Nothing
   <*> areq emailField ("Email input" `withPlaceholder` bfs "Email") Nothing
-  <*> areq (BF.selectFieldList [("Select dropdown" :: Text, "v1"),("With options", "vv2")]) (bfs "Subject") Nothing
+  <*> areq (BF.selectFieldList [("Select dropdown" :: Text, "v1"),("With options", "vv2")]) "Subject" Nothing
+  <*> areq BF.textareaField ("Textarea" `withPlaceholder` "Message") Nothing
   <*  bulmaSubmit
         (BulmaSubmit ("保存" :: Text)
                       "btn-default"
