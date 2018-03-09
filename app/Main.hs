@@ -28,6 +28,7 @@ data Basic = Basic
   , subject  :: Text
   , message :: Textarea
   , agree :: Bool
+  , question :: Text
   }
 
 basicForm :: Html -> MForm Handler (FormResult Basic, Widget)
@@ -38,6 +39,7 @@ basicForm = renderBulma BulmaBasicForm $ Basic
   <*> areq (BF.selectFieldList [("Select dropdown" :: Text, "v1"),("With options", "vv2")]) "Subject" Nothing
   <*> areq BF.textareaField ("Textarea" `withPlaceholder` "Message") Nothing
   <*> areq (BF.checkBoxField "I agree to the terms and conditions") "" Nothing
+  <*> areq (BF.radioFieldList [("yes" :: Text, "y"),("no", "n")]) "" Nothing
   <*  bulmaSubmit
         (BulmaSubmit ("保存" :: Text)
                       "btn-default"
@@ -55,16 +57,19 @@ getHomeR = do
       FormSuccess res ->
         [whamlet|
           <section .section .columns>
-            <div .container .column .is-6>
+            <div .container .column .is-4>
               <form method=post action=@{HomeR} enctype=#{enctype}>
                 ^{form1}
 
-            <div .container .column .is-6>
+            <div .container .column .is-4>
               <table .table>
                 <tr><th>Name</th><td>#{name res}</td></tr>
                 <tr><th>Username</th><td>#{username res}</td></tr>
                 <tr><th>Email</th><td>#{email res}</td></tr>
                 <tr><th>Subject</th><td>#{subject res}</td></tr>
+                <tr><th>Message</th><td>#{message res}</td></tr>
+                <tr><th>Agree</th><td>#{agree res}</td></tr>
+                <tr><th>Question</th><td>#{question res}</td></tr>
         |]
       _ ->
         [whamlet|

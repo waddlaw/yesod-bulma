@@ -35,8 +35,8 @@ Access to [localhost:3000](http://localhost:3000)
 
 - [x] selectField
 - [x] selectFieldList
-- [ ] radioField
-- [ ] radioFieldList
+- [x] radioField
+- [x] radioFieldList
 - [ ] checkboxesField
 - [ ] checkboxesFieldList
 - [ ] multiSelectField

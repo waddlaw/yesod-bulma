@@ -41,7 +41,10 @@ renderBulma formLayout aform fragment = do
               <div .control>
                 <button .button .is-link>Submit
           $else
-            <div .field :fvRequired view:.required :not $ fvRequired view:.optional :has $ fvErrors view:.is-danger>
+            <div .field
+                 :fvRequired view:.required
+                 :not $ fvRequired view:.optional
+                 :has $ fvErrors view:.is-danger>
               $case formLayout
                 $of BulmaBasicForm
                   <label .label for=#{fvId view}>#{fvLabel view}

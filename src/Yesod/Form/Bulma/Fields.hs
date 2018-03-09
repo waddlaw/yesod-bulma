@@ -84,6 +84,34 @@ checkBoxField msg = Field
         _     -> Right $ Just False
     showVal = either (\_ -> False)
 
+-- | Creates an input with @type="radio"@ for selecting one option.
+radioFieldList :: (Eq a, RenderMessage site FormMessage, RenderMessage site msg)
+               => [(msg, a)]
+               -> Field (HandlerT site IO) a
+radioFieldList = radioField . optionsPairs
+
+-- | Creates an input with @type="radio"@ for selecting one option.
+radioField :: (Eq a, RenderMessage site FormMessage)
+           => HandlerT site IO (OptionList a)
+           -> Field (HandlerT site IO) a
+radioField = selectFieldHelper
+  (\theId _name _attrs inside ->
+    [whamlet| $newline never
+      <div ##{theId}>^{inside}
+    |])
+  (\theId name isSel ->
+    [whamlet| $newline never
+      <label .radio for=#{theId}-none>
+        <div>
+          <input id=#{theId}-none type=radio name=#{name} value=none :isSel:checked> _{MsgSelectNone}
+    |])
+  (\theId name attrs value isSel text ->
+    [whamlet| $newline never
+      <label .radio for=#{theId}-#{value}>
+        <div>
+          <input id=#{theId}-#{value} type=radio name=#{name} value=#{value} :isSel:checked *{attrs}> #{text}
+    |])
+
 -- | Creates a @\<select>@ tag for selecting one option. Example usage:
 --
 -- > areq (selectFieldList [("Value 1" :: Text, "value1"),("Value 2", "value2")]) "Which value?" Nothing
