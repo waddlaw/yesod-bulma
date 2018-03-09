@@ -31,8 +31,8 @@ selectField :: (Eq a, RenderMessage site FormMessage)
 selectField = selectFieldHelper
     (\theId name attrs inside ->
       [whamlet| $newline never
-        <div .select ##{theId} name=#{name} *{attrs}>
-          <select>
+        <div .select>
+          <select ##{theId} name=#{name} *{attrs}>
             ^{inside}
       |]) -- outside
     (\_theId _name isSel ->
