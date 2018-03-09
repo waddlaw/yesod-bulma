@@ -31,9 +31,9 @@ data Basic = Basic
 
 basicForm :: Html -> MForm Handler (FormResult Basic, Widget)
 basicForm = renderBulma BulmaBasicForm $ Basic
-  <$> areq textField ("Text input" `withPlaceholder` bfs "Name") Nothing
-  <*> areq textField ("bulma" `withPlaceholder` bfs "Username") Nothing
-  <*> areq emailField ("Email input" `withPlaceholder` bfs "Email") Nothing
+  <$> areq textField ("Text input" `withPlaceholder` "Name") Nothing
+  <*> areq textField ("bulma" `withPlaceholder` "Username") Nothing
+  <*> areq emailField ("Email input" `withPlaceholder` "Email") Nothing
   <*> areq (BF.selectFieldList [("Select dropdown" :: Text, "v1"),("With options", "vv2")]) "Subject" Nothing
   <*> areq BF.textareaField ("Textarea" `withPlaceholder` "Message") Nothing
   <*  bulmaSubmit

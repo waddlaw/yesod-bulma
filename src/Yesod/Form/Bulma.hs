@@ -3,7 +3,7 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
 {-# LANGUAGE TypeFamilies          #-}
-module Yesod.Form.Bulma (renderBulma, bfs, bulmaSubmit, BulmaSubmit(..), BulmaFormLayout(..), withPlaceholder) where
+module Yesod.Form.Bulma (renderBulma, bulmaSubmit, BulmaSubmit(..), BulmaFormLayout(..), withPlaceholder) where
 
 import           Data.Bifunctor        (second)
 import           Data.Text             (Text)
@@ -85,9 +85,6 @@ helpWidget view = [whamlet|
 
 bulmaSubmitId :: Text
 bulmaSubmitId = "b:ulma___unique__:::::::::::::::::submit-id"
-
-bfs :: RenderMessage site Text => Text -> FieldSettings site
-bfs msg = FieldSettings (SomeMessage msg) Nothing Nothing Nothing [("class", "input")]
 
 withPlaceholder :: Text -> FieldSettings site -> FieldSettings site
 withPlaceholder placeholder fs = fs { fsAttrs = newAttrs }
