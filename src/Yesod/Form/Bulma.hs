@@ -3,7 +3,7 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
 {-# LANGUAGE TypeFamilies          #-}
-module Yesod.Form.Bulma (renderBulma, bfs, bulmaSubmit) where
+module Yesod.Form.Bulma (renderBulma, bfs, bulmaSubmit, BulmaSubmit(..), BulmaFormLayout(..), withPlaceholder) where
 
 import           Data.Bifunctor        (second)
 import           Data.Text             (Text)
@@ -39,9 +39,7 @@ renderBulma formLayout aform fragment = do
           $if fvId view == bulmaSubmitId
             <div .field .is-grouped>
               <div .control>
-                <button .button .is-link>決定
-              <div .control>
-                <p .button .is-text ##{cancelId}>戻る
+                <button .button .is-link>Submit
           $else
             <div .field :fvRequired view:.required :not $ fvRequired view:.optional :has $ fvErrors view:.is-danger>
               $case formLayout
@@ -50,12 +48,6 @@ renderBulma formLayout aform fragment = do
                   <div .control>
                     ^{fvInput view}
                     ^{helpWidget view}
-      |]
-      toWidget [julius|
-        $('##{rawJS cancelId}').on('click',function(){
-          var ref = document.referrer;
-          window.location.href = ref;
-        });
       |]
   return (res, widget)
   where
@@ -96,3 +88,7 @@ bulmaSubmitId = "b:ulma___unique__:::::::::::::::::submit-id"
 
 bfs :: RenderMessage site Text => Text -> FieldSettings site
 bfs msg = FieldSettings (SomeMessage msg) Nothing Nothing Nothing [("class", "input")]
+
+withPlaceholder :: Text -> FieldSettings site -> FieldSettings site
+withPlaceholder placeholder fs = fs { fsAttrs = newAttrs }
+  where newAttrs = ("placeholder", placeholder) : fsAttrs fs
