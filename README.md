@@ -13,16 +13,16 @@ Access to [localhost:3000](http://localhost:3000)
 
 #### Fields
 
-- [ ] textField
+- [x] textField
 - [ ] passwordField
-- [ ] textareaField
+- [x] textareaField
 - [ ] hiddenField
 - [ ] intField
 - [ ] dayField
 - [ ] timeFieldTypeTime
 - [ ] timeFieldTypeText
 - [ ] htmlField
-- [ ] emailField
+- [x] emailField
 - [ ] multiEmailField
 - [ ] searchField
 - [ ] urlField
