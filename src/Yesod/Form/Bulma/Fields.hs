@@ -18,6 +18,17 @@ import           Yesod.Form.Fields     (FormMessage (..), Option (..),
 import           Yesod.Form.Functions  (parseHelper)
 import           Yesod.Form.Types      (Enctype (..), Field (..))
 
+-- | Creates a input with @type="text"@.
+textField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Text
+textField = Field
+    { fieldParse = parseHelper $ Right
+    , fieldView = \theId name attrs val isReq ->
+        [whamlet| $newline never
+          <input id="#{theId}" .input name="#{name}" *{attrs} type="text" :isReq:required value="#{either id id val}">
+        |]
+    , fieldEnctype = UrlEncoded
+    }
+
 -- | Creates a @\<textarea>@ tag whose returned value is wrapped in a 'Textarea'; see 'Textarea' for details.
 textareaField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Textarea
 textareaField = Field
