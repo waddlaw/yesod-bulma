@@ -27,6 +27,7 @@ data Basic = Basic
   , email    :: Text
   , subject  :: Text
   , message :: Textarea
+  , agree :: Bool
   }
 
 basicForm :: Html -> MForm Handler (FormResult Basic, Widget)
@@ -36,6 +37,7 @@ basicForm = renderBulma BulmaBasicForm $ Basic
   <*> areq BF.emailField ("Email input" `withPlaceholder` "Email") Nothing
   <*> areq (BF.selectFieldList [("Select dropdown" :: Text, "v1"),("With options", "vv2")]) "Subject" Nothing
   <*> areq BF.textareaField ("Textarea" `withPlaceholder` "Message") Nothing
+  <*> areq (BF.checkBoxField "I agree to the terms and conditions") "" Nothing
   <*  bulmaSubmit
         (BulmaSubmit ("保存" :: Text)
                       "btn-default"

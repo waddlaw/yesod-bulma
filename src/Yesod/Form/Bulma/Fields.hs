@@ -5,7 +5,7 @@
 {-# LANGUAGE QuasiQuotes           #-}
 module Yesod.Form.Bulma.Fields where
 
-import           Control.Monad            (unless, forM_)
+import           Control.Monad            (forM_, unless)
 import           Data.Maybe               (listToMaybe)
 import           Data.Text                (Text)
 import           Data.Text.Encoding       (decodeUtf8With, encodeUtf8)
@@ -57,6 +57,32 @@ textareaField = Field
       |]
   , fieldEnctype = UrlEncoded
   }
+
+-- | Creates an input with @type="checkbox"@.
+--   While the default @'boolField'@ implements a radio button so you
+--   can differentiate between an empty response (@Nothing@) and a no
+--   response (@Just False@), this simpler checkbox field returns an empty
+--   response as @Just False@.
+--
+--   Note that this makes the field always optional.
+--
+checkBoxField :: Monad m => Text -> Field m Bool
+checkBoxField msg = Field
+  { fieldParse = \e _ -> return $ checkBoxParser e
+  , fieldView  = \theId name attrs val _ ->
+      [whamlet| $newline never
+        <label .checkbox>
+          <input id=#{theId} *{attrs} type=checkbox name=#{name} value=yes :showVal id val:checked> #{msg}
+      |]
+  , fieldEnctype = UrlEncoded
+  }
+  where
+    checkBoxParser [] = Right $ Just False
+    checkBoxParser (x:_) = case x of
+        "yes" -> Right $ Just True
+        "on"  -> Right $ Just True
+        _     -> Right $ Just False
+    showVal = either (\_ -> False)
 
 -- | Creates a @\<select>@ tag for selecting one option. Example usage:
 --
