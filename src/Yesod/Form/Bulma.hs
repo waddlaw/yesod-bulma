@@ -33,7 +33,7 @@ renderBulma formLayout aform fragment = do
     views = views' []
     widget = do
       cancelId <- newIdent
-      [whamlet| $#newline never
+      [whamlet| $newline never
         #{fragment}
         $forall view <- views
           $if fvId view == bulmaSubmitId
