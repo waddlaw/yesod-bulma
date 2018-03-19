@@ -1,8 +1,17 @@
 # yesod-form-bulma
 
+## Run
+
 ```hs
 $ stack build
-$ stack exec yesod-form-bulma
+$ stack exec example
+```
+
+Or
+
+```hs
+$ stack build
+$ stack exec showcase
 ```
 
 Access to [localhost:3100](http://localhost:3100)

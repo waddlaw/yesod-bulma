@@ -23,12 +23,19 @@ dependencies:
 library:
   source-dirs: src
 
-executable:
-  main: Main.hs
-  source-dirs: app
-  dependencies:
-    - yesod-form-bulma
-    - yesod
+executables:
+  example:
+    main: Main.hs
+    source-dirs: app/Example
+    dependencies:
+      - yesod-form-bulma
+      - yesod
+  showcase:
+    main: Main.hs
+    source-dirs: app/Showcase
+    dependencies:
+      - yesod-form-bulma
+      - yesod
 
 tests:
   yesod-form-bulma-test:
