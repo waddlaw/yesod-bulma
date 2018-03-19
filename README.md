@@ -37,7 +37,7 @@ Access to [localhost:3100](http://localhost:3100)
 - [x] bulmaSelectFieldList
 - [x] bulmaRadioField
 - [x] bulmaRadioFieldList
-- [ ] bulmaCheckboxesField
-- [ ] checkboxesFieldList
-- [ ] multiSelectField
-- [ ] multiSelectFieldList
+- [x] bulmaCheckboxesField
+- [x] bulmaCheckboxesFieldList
+- [x] bulmaMultiSelectField
+- [x] bulmaMultiSelectFieldList
