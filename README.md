@@ -5,7 +5,7 @@ $ stack build
 $ stack exec yesod-form-bulma
 ```
 
-Access to [localhost:3000](http://localhost:3000)
+Access to [localhost:3100](http://localhost:3100)
 
 ## Implemented status
 
@@ -13,31 +13,31 @@ Access to [localhost:3000](http://localhost:3000)
 
 #### Fields
 
-- [x] textField
-- [ ] passwordField
-- [x] textareaField
-- [ ] hiddenField
-- [ ] intField
-- [ ] dayField
-- [ ] timeFieldTypeTime
-- [ ] timeFieldTypeText
-- [ ] htmlField
-- [x] emailField
-- [ ] multiEmailField
-- [ ] searchField
-- [ ] urlField
-- [ ] doubleField
-- [ ] boolField
-- [x] checkBoxField
-- [ ] fileField
+- [x] bulmaTextField
+- [ ] bulmaPasswordField
+- [x] bulmaTextareaField
+- [ ] bulmaHiddenField
+- [x] bulmaIntField
+- [ ] bulmaDayField
+- [ ] bulmaTimeFieldTypeTime
+- [ ] bulmaTimeFieldTypeText
+- [ ] bulmaHtmlField
+- [x] bulmaEmailField
+- [ ] bulmaMultiEmailField
+- [ ] bulmaSearchField
+- [ ] bulmaUrlField
+- [ ] bulmaDoubleField
+- [ ] bulmaBoolField
+- [x] bulmaCheckBoxField
+- [ ] bulmaFileField
 
 #### Options
 
-- [x] selectField
-- [x] selectFieldList
-- [x] radioField
-- [x] radioFieldList
-- [ ] checkboxesField
+- [x] bulmaSelectField
+- [x] bulmaSelectFieldList
+- [x] bulmaRadioField
+- [x] bulmaRadioFieldList
+- [ ] bulmaCheckboxesField
 - [ ] checkboxesFieldList
 - [ ] multiSelectField
 - [ ] multiSelectFieldList

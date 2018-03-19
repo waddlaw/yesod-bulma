@@ -88,4 +88,4 @@ postHomeR :: Handler Html
 postHomeR = getHomeR
 
 main :: IO ()
-main = warp 3000 App
+main = warp 3100 App
