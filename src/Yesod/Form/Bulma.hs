@@ -3,18 +3,27 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
 {-# LANGUAGE TypeFamilies          #-}
-module Yesod.Form.Bulma (renderBulma, bulmaSubmit, BulmaSubmit(..), BulmaFormLayout(..), withPlaceholder) where
+module Yesod.Form.Bulma
+  ( module Yesod.Form.Bulma.Fields
+  , renderBulma
+  , bulmaSubmit
+  , BulmaSubmit(..)
+  , BulmaFormLayout(..)
+  , withPlaceholder
+  ) where
 
-import           Data.Bifunctor        (second)
-import           Data.Text             (Text)
-import           Text.Shakespeare.I18N (RenderMessage)
-import           Yesod.Core            (HandlerSite, MonadHandler)
-import           Yesod.Core.Handler    (newIdent)
-import           Yesod.Core.Types      (WidgetFor)
-import           Yesod.Core.Widget     (whamlet)
-import           Yesod.Form.Functions  (FormRender, aFormToForm, formToAForm)
-import           Yesod.Form.Types      (AForm, FieldSettings (..),
-                                        FieldView (..), FormResult (..), MForm)
+import           Data.Bifunctor          (second)
+import           Data.Text               (Text)
+import           Text.Shakespeare.I18N   (RenderMessage)
+import           Yesod.Core              (HandlerSite, MonadHandler)
+import           Yesod.Core.Handler      (newIdent)
+import           Yesod.Core.Types        (WidgetFor)
+import           Yesod.Core.Widget       (whamlet)
+import           Yesod.Form.Bulma.Fields
+import           Yesod.Form.Functions    (FormRender, aFormToForm, formToAForm)
+import           Yesod.Form.Types        (AForm, FieldSettings (..),
+                                          FieldView (..), FormResult (..),
+                                          MForm)
 
 data BulmaFormLayout = BulmaBasicForm
 
