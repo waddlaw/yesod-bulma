@@ -3,6 +3,7 @@
 {-# LANGUAGE QuasiQuotes           #-}
 {-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
+{-# OPTIONS_GHC -fno-warn-unused-top-binds #-}
 module Main (main) where
 
 import           Data.Text               (Text)
@@ -26,8 +27,8 @@ data Basic = Basic
   , username :: Text
   , email    :: Text
   , subject  :: Text
-  , message :: Textarea
-  , agree :: Bool
+  , message  :: Textarea
+  , agree    :: Bool
   , question :: Text
   }
 
@@ -48,12 +49,12 @@ basicForm = renderBulma BulmaBasicForm $ Basic
 
 getHomeR :: Handler Html
 getHomeR = do
-  ((res, form1), enctype) <- runFormPost basicForm
+  ((result, form1), enctype) <- runFormPost basicForm
 
   defaultLayout $ do
     addStylesheetRemote "//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css"
     addScriptRemote "//use.fontawesome.com/releases/v5.0.8/js/all.js"
-    case res of
+    case result of
       FormSuccess res ->
         [whamlet|
           <section .section .columns>
