@@ -6,7 +6,8 @@
 {-# OPTIONS_GHC -fno-warn-unused-top-binds #-}
 module Main (main) where
 
-import           Data.Text        (Text)
+import           Control.Arrow    ((&&&))
+import           Data.Text        (Text, pack)
 import           Yesod
 import           Yesod.Form.Bulma
 
@@ -22,25 +23,38 @@ instance RenderMessage App FormMessage where
   renderMessage _ _ = defaultFormMessage
 
 data Basic = Basic
-  { getTextField     :: Text
+  { getTextField       :: Text
   -- , getPasswordField :: Text
-  , getTextareaField :: Textarea
+  , getTextareaField   :: Textarea
   -- , getHiddenField  :: Text
-  , getIntField      :: Int
+  , getIntField        :: Int
   -- , getDayField    :: Day
   -- , getTimeFieldTypeTime :: Text
   -- , getTimeFieldTypeText
   -- , getHtmlField
-  , getEmailField    :: Text
+  , getEmailField      :: Text
   -- , getMultiEmailField
   -- , getSearchField
   -- , getUrlField
   -- , getDoubleField
   -- , getBoolField
-  , getCheckBoxField :: Bool
+  , getCheckBoxField   :: Bool
   -- , getFileField
-  -- , getSelectField ::
+  , getSelectField     :: Color
+  , getSelectFieldList :: Color
+  , getRadioField :: Color
+  , getRadioFieldList :: Color
+  , getCheckboxesField :: [Color]
+  , getCheckboxesFieldList :: [Color]
+  , getMultiSelectField :: [Color]
+  , getMultiSelectFieldList :: [Color]
   }
+
+data Color = Red | Blue | Gray | Black
+  deriving (Show, Eq, Enum, Bounded)
+
+colors :: [(Text, Color)]
+colors = map (pack . show &&& id) [minBound .. maxBound]
 
 basicForm :: Html -> MForm Handler (FormResult Basic, Widget)
 basicForm =
@@ -51,6 +65,14 @@ basicForm =
     <*> areq bulmaIntField "bulmaIntField" Nothing
     <*> areq bulmaEmailField "bulmaEmailField" Nothing
     <*> areq (bulmaCheckBoxField "bulmaCheckBoxField") "" Nothing
+    <*> areq (bulmaSelectField optionsEnum) "bulmaSelectField" Nothing
+    <*> areq (bulmaSelectFieldList colors) "bulmaSelectFieldList" Nothing
+    <*> areq (bulmaRadioFieldList colors) "bulmaRadioList" Nothing
+    <*> areq (bulmaRadioFieldList colors) "bulmaRadioFieldList" Nothing
+    <*> areq (bulmaCheckboxesField optionsEnum) "bulmaCheckboxesField" Nothing
+    <*> areq (bulmaCheckboxesFieldList colors) "bulmaCheckboxesFieldList" Nothing
+    <*> areq (bulmaMultiSelectField optionsEnum) "bulmaMultiSelectField" Nothing
+    <*> areq (bulmaMultiSelectFieldList colors) "bulmaMultiSelectFieldList" Nothing
     <*  bulmaSubmit
           (BulmaSubmit ("保存" :: Text)
                        "btn-default"
