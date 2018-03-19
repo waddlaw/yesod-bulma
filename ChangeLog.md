@@ -3,11 +3,11 @@
 ## Unreleased changes
 
 - Upgrade to yesod-core 1.6
-- Add textField
-- Add textareaField
-- Add emailField
-- Add checkBoxField
-- Add selectField
-- Add selectFieldList
-- Add radioField
-- Add radioFieldList
+- Add bulmaTextField
+- Add bulmaTextareaField
+- Add bulmaEmailField
+- Add bulmaCheckBoxField
+- Add bulmaSelectField
+- Add bulmaSelectFieldList
+- Add bulmaRadioField
+- Add bulmaRadioFieldList
