@@ -9,7 +9,6 @@ module Main (main) where
 import           Data.Text               (Text)
 import           Yesod
 import           Yesod.Form.Bulma
-import           Yesod.Form.Bulma.Fields as BF
 
 data App = App
 
@@ -34,13 +33,13 @@ data Basic = Basic
 
 basicForm :: Html -> MForm Handler (FormResult Basic, Widget)
 basicForm = renderBulma BulmaBasicForm $ Basic
-  <$> areq BF.textField ("Text input" `withPlaceholder` "Name") Nothing
-  <*> areq BF.textField ("bulma" `withPlaceholder` "Username") Nothing
-  <*> areq BF.emailField ("Email input" `withPlaceholder` "Email") Nothing
-  <*> areq (BF.selectFieldList [("Select dropdown" :: Text, "v1"),("With options", "vv2")]) "Subject" Nothing
-  <*> areq BF.textareaField ("Textarea" `withPlaceholder` "Message") Nothing
-  <*> areq (BF.checkBoxField "I agree to the terms and conditions") "" Nothing
-  <*> areq (BF.radioFieldList [("yes" :: Text, "y"),("no", "n")]) "" Nothing
+  <$> areq bulmaTextField ("Text input" `withPlaceholder` "Name") Nothing
+  <*> areq bulmaTextField ("bulma" `withPlaceholder` "Username") Nothing
+  <*> areq bulmaEmailField ("Email input" `withPlaceholder` "Email") Nothing
+  <*> areq (bulmaSelectFieldList [("Select dropdown" :: Text, "v1"),("With options", "vv2")]) "Subject" Nothing
+  <*> areq bulmaTextareaField ("Textarea" `withPlaceholder` "Message") Nothing
+  <*> areq (bulmaCheckBoxField "I agree to the terms and conditions") "" Nothing
+  <*> areq (bulmaRadioFieldList [("yes" :: Text, "y"),("no", "n")]) "" Nothing
   <*  bulmaSubmit
         (BulmaSubmit ("保存" :: Text)
                       "btn-default"

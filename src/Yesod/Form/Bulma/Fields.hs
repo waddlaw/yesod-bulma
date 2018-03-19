@@ -3,7 +3,16 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
-module Yesod.Form.Bulma.Fields where
+module Yesod.Form.Bulma.Fields
+  ( bulmaTextField
+  , bulmaEmailField
+  , bulmaTextareaField
+  , bulmaCheckBoxField
+  , bulmaRadioFieldList
+  , bulmaRadioField
+  , bulmaSelectFieldList
+  , bulmaSelectField
+  ) where
 
 import           Control.Monad            (forM_, unless)
 import           Data.Maybe               (listToMaybe)
@@ -22,8 +31,8 @@ import           Yesod.Form.Functions     (parseHelper)
 import           Yesod.Form.Types         (Enctype (..), Field (..))
 
 -- | Creates a input with @type="text"@.
-textField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Text
-textField = Field
+bulmaTextField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Text
+bulmaTextField = Field
   { fieldParse = parseHelper Right
   , fieldView = \theId name attrs val isReq ->
       [whamlet| $newline never
@@ -33,8 +42,8 @@ textField = Field
   }
 
 -- | Creates an input with @type="email"@. Yesod will validate the email's correctness according to RFC5322 and canonicalize it by removing comments and whitespace (see "Text.Email.Validate").
-emailField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Text
-emailField = Field
+bulmaEmailField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Text
+bulmaEmailField = Field
   { fieldParse = parseHelper $
     \s ->
       case Email.canonicalizeEmail $ encodeUtf8 s of
@@ -48,8 +57,8 @@ emailField = Field
   }
 
 -- | Creates a @\<textarea>@ tag whose returned value is wrapped in a 'Textarea'; see 'Textarea' for details.
-textareaField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Textarea
-textareaField = Field
+bulmaTextareaField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Textarea
+bulmaTextareaField = Field
   { fieldParse = parseHelper $ Right . Textarea
   , fieldView = \theId name attrs val isReq ->
       [whamlet| $newline never
@@ -66,8 +75,8 @@ textareaField = Field
 --
 --   Note that this makes the field always optional.
 --
-checkBoxField :: Monad m => Text -> Field m Bool
-checkBoxField msg = Field
+bulmaCheckBoxField :: Monad m => Text -> Field m Bool
+bulmaCheckBoxField msg = Field
   { fieldParse = \e _ -> return $ checkBoxParser e
   , fieldView  = \theId name attrs val _ ->
       [whamlet| $newline never
@@ -85,16 +94,16 @@ checkBoxField msg = Field
     showVal = either (\_ -> False)
 
 -- | Creates an input with @type="radio"@ for selecting one option.
-radioFieldList :: (Eq a, RenderMessage site FormMessage, RenderMessage site msg)
+bulmaRadioFieldList :: (Eq a, RenderMessage site FormMessage, RenderMessage site msg)
                => [(msg, a)]
                -> Field (HandlerFor site) a
-radioFieldList = radioField . optionsPairs
+bulmaRadioFieldList = bulmaRadioField . optionsPairs
 
 -- | Creates an input with @type="radio"@ for selecting one option.
-radioField :: (Eq a, RenderMessage site FormMessage)
+bulmaRadioField :: (Eq a, RenderMessage site FormMessage)
            => HandlerFor site (OptionList a)
            -> Field (HandlerFor site) a
-radioField = selectFieldHelper
+bulmaRadioField = selectFieldHelper
   (\theId _name _attrs inside ->
     [whamlet| $newline never
       <div ##{theId}>^{inside}
@@ -115,18 +124,18 @@ radioField = selectFieldHelper
 -- | Creates a @\<select>@ tag for selecting one option. Example usage:
 --
 -- > areq (selectFieldList [("Value 1" :: Text, "value1"),("Value 2", "value2")]) "Which value?" Nothing
-selectFieldList :: (Eq a, RenderMessage site FormMessage, RenderMessage site msg)
+bulmaSelectFieldList :: (Eq a, RenderMessage site FormMessage, RenderMessage site msg)
                 => [(msg, a)]
                 -> Field (HandlerFor site) a
-selectFieldList = selectField . optionsPairs
+bulmaSelectFieldList = bulmaSelectField . optionsPairs
 
 -- | Creates a @\<select>@ tag for selecting one option. Example usage:
 --
 -- > areq (selectField $ optionsPairs [(MsgValue1, "value1"),(MsgValue2, "value2")]) "Which value?" Nothing
-selectField :: (Eq a, RenderMessage site FormMessage)
+bulmaSelectField :: (Eq a, RenderMessage site FormMessage)
             => HandlerFor site (OptionList a)
             -> Field (HandlerFor site) a
-selectField = selectFieldHelper
+bulmaSelectField = selectFieldHelper
   (\theId name attrs inside ->
     [whamlet| $newline never
       <div .select>
