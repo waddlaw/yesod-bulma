@@ -13,7 +13,7 @@ import           Data.Text.Encoding.Error (lenientDecode)
 import qualified Text.Email.Validate      as Email
 import           Text.Shakespeare.I18N    (RenderMessage, SomeMessage (..))
 import           Yesod.Core               (HandlerSite)
-import           Yesod.Core.Types         (HandlerT, WidgetT)
+import           Yesod.Core.Types         (HandlerFor, WidgetFor)
 import           Yesod.Core.Widget        (handlerToWidget, whamlet)
 import           Yesod.Form.Fields        (FormMessage (..), Option (..),
                                            OptionList (..), Textarea (..),
@@ -87,13 +87,13 @@ checkBoxField msg = Field
 -- | Creates an input with @type="radio"@ for selecting one option.
 radioFieldList :: (Eq a, RenderMessage site FormMessage, RenderMessage site msg)
                => [(msg, a)]
-               -> Field (HandlerT site IO) a
+               -> Field (HandlerFor site) a
 radioFieldList = radioField . optionsPairs
 
 -- | Creates an input with @type="radio"@ for selecting one option.
 radioField :: (Eq a, RenderMessage site FormMessage)
-           => HandlerT site IO (OptionList a)
-           -> Field (HandlerT site IO) a
+           => HandlerFor site (OptionList a)
+           -> Field (HandlerFor site) a
 radioField = selectFieldHelper
   (\theId _name _attrs inside ->
     [whamlet| $newline never
@@ -117,15 +117,15 @@ radioField = selectFieldHelper
 -- > areq (selectFieldList [("Value 1" :: Text, "value1"),("Value 2", "value2")]) "Which value?" Nothing
 selectFieldList :: (Eq a, RenderMessage site FormMessage, RenderMessage site msg)
                 => [(msg, a)]
-                -> Field (HandlerT site IO) a
+                -> Field (HandlerFor site) a
 selectFieldList = selectField . optionsPairs
 
 -- | Creates a @\<select>@ tag for selecting one option. Example usage:
 --
 -- > areq (selectField $ optionsPairs [(MsgValue1, "value1"),(MsgValue2, "value2")]) "Which value?" Nothing
 selectField :: (Eq a, RenderMessage site FormMessage)
-            => HandlerT site IO (OptionList a)
-            -> Field (HandlerT site IO) a
+            => HandlerFor site (OptionList a)
+            -> Field (HandlerFor site) a
 selectField = selectFieldHelper
   (\theId name attrs inside ->
     [whamlet| $newline never
@@ -145,11 +145,11 @@ selectField = selectFieldHelper
 -- port from Yesod.Form.Fields
 selectFieldHelper
         :: (Eq a, RenderMessage site FormMessage)
-        => (Text -> Text -> [(Text, Text)] -> WidgetT site IO () -> WidgetT site IO ())
-        -> (Text -> Text -> Bool -> WidgetT site IO ())
-        -> (Text -> Text -> [(Text, Text)] -> Text -> Bool -> Text -> WidgetT site IO ())
-        -> HandlerT site IO (OptionList a)
-        -> Field (HandlerT site IO) a
+        => (Text -> Text -> [(Text, Text)] -> WidgetFor site () -> WidgetFor site ())
+        -> (Text -> Text -> Bool -> WidgetFor site ())
+        -> (Text -> Text -> [(Text, Text)] -> Text -> Bool -> Text -> WidgetFor site ())
+        -> HandlerFor site (OptionList a)
+        -> Field (HandlerFor site) a
 selectFieldHelper outside onOpt inside opts' = Field
   { fieldParse = \x _ -> do
     opts <- opts'

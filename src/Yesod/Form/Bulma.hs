@@ -7,12 +7,11 @@ module Yesod.Form.Bulma (renderBulma, bulmaSubmit, BulmaSubmit(..), BulmaFormLay
 
 import           Data.Bifunctor        (second)
 import           Data.Text             (Text)
-import           Text.Julius           (julius, rawJS)
-import           Text.Shakespeare.I18N (RenderMessage, SomeMessage (..))
+import           Text.Shakespeare.I18N (RenderMessage)
 import           Yesod.Core            (HandlerSite, MonadHandler)
 import           Yesod.Core.Handler    (newIdent)
-import           Yesod.Core.Types      (WidgetT)
-import           Yesod.Core.Widget     (toWidget, whamlet)
+import           Yesod.Core.Types      (WidgetFor)
+import           Yesod.Core.Widget     (whamlet)
 import           Yesod.Form.Functions  (FormRender, aFormToForm, formToAForm)
 import           Yesod.Form.Types      (AForm, FieldSettings (..),
                                         FieldView (..), FormResult (..), MForm)
@@ -32,7 +31,7 @@ renderBulma formLayout aform fragment = do
   let
     views = views' []
     widget = do
-      cancelId <- newIdent
+      _cancelId <- newIdent
       [whamlet| $newline never
         #{fragment}
         $forall view <- views
@@ -78,7 +77,7 @@ mbulmaSubmit (BulmaSubmit msg classes attrs) =
     in return (res, fv)
 
 -- | (Internal) Render a help widget for tooltips and errors.
-helpWidget :: FieldView site -> WidgetT site IO ()
+helpWidget :: FieldView site -> WidgetFor site ()
 helpWidget view = [whamlet|
     $maybe tt <- fvTooltip view
       <span .help-block>#{tt}
