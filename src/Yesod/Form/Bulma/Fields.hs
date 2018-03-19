@@ -82,9 +82,10 @@ bulmaMultiSelectField ioptlist = Field parse view UrlEncoded
     opts <- fmap olOptions $ handlerToWidget ioptlist
     let selOpts = map (id &&& (optselected val)) opts
     [whamlet| $newline never
-      <select ##{theId} name=#{name} :isReq:required multiple *{attrs}>
-        $forall (opt, optsel) <- selOpts
-          <option value=#{optionExternalValue opt} :optsel:selected>#{optionDisplay opt}
+      <div .select .is-multiple>
+        <select ##{theId} name=#{name} :isReq:required multiple size=#{min 5 (length selOpts)} *{attrs}>
+          $forall (opt, optsel) <- selOpts
+            <option value=#{optionExternalValue opt} :optsel:selected>#{optionDisplay opt}
     |]
     where
       optselected (Left _) _       = False
