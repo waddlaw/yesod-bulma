@@ -90,7 +90,9 @@ bulmaMultiSelectField ioptlist = Field parse view UrlEncoded
       optselected (Right vals) opt = (optionInternalValue opt) `elem` vals
 
 -- | Creates a input with @type="number"@ and @step=1@.
-bulmaIntField :: (Monad m, Integral i, RenderMessage (HandlerSite m) FormMessage) => Field m i
+bulmaIntField
+  :: (Monad m, Integral i, RenderMessage (HandlerSite m) FormMessage)
+  => Field m i
 bulmaIntField = Field
   { fieldParse = parseHelper $ \s ->
     case signed decimal s of
@@ -107,7 +109,8 @@ bulmaIntField = Field
     showI x = show (fromIntegral x :: Integer)
 
 -- | Creates a input with @type="text"@.
-bulmaTextField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Text
+bulmaTextField
+  :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Text
 bulmaTextField = Field
   { fieldParse = parseHelper Right
   , fieldView = \theId name attrs val isReq ->
@@ -118,7 +121,8 @@ bulmaTextField = Field
   }
 
 -- | Creates an input with @type="email"@. Yesod will validate the email's correctness according to RFC5322 and canonicalize it by removing comments and whitespace (see "Text.Email.Validate").
-bulmaEmailField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Text
+bulmaEmailField
+  :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Text
 bulmaEmailField = Field
   { fieldParse = parseHelper $
     \s ->
@@ -133,7 +137,8 @@ bulmaEmailField = Field
   }
 
 -- | Creates a @\<textarea>@ tag whose returned value is wrapped in a 'Textarea'; see 'Textarea' for details.
-bulmaTextareaField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Textarea
+bulmaTextareaField
+  :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Textarea
 bulmaTextareaField = Field
   { fieldParse = parseHelper $ Right . Textarea
   , fieldView = \theId name attrs val isReq ->
@@ -170,15 +175,17 @@ bulmaCheckBoxField msg = Field
     showVal = either (\_ -> False)
 
 -- | Creates an input with @type="radio"@ for selecting one option.
-bulmaRadioFieldList :: (Eq a, RenderMessage site FormMessage, RenderMessage site msg)
-               => [(msg, a)]
-               -> Field (HandlerFor site) a
+bulmaRadioFieldList
+  :: (Eq a, RenderMessage site FormMessage, RenderMessage site msg)
+  => [(msg, a)]
+  -> Field (HandlerFor site) a
 bulmaRadioFieldList = bulmaRadioField . optionsPairs
 
 -- | Creates an input with @type="radio"@ for selecting one option.
-bulmaRadioField :: (Eq a, RenderMessage site FormMessage)
-           => HandlerFor site (OptionList a)
-           -> Field (HandlerFor site) a
+bulmaRadioField
+  :: (Eq a, RenderMessage site FormMessage)
+  => HandlerFor site (OptionList a)
+  -> Field (HandlerFor site) a
 bulmaRadioField = selectFieldHelper
   (\theId _name _attrs inside ->
     [whamlet| $newline never
@@ -200,17 +207,19 @@ bulmaRadioField = selectFieldHelper
 -- | Creates a @\<select>@ tag for selecting one option. Example usage:
 --
 -- > areq (selectFieldList [("Value 1" :: Text, "value1"),("Value 2", "value2")]) "Which value?" Nothing
-bulmaSelectFieldList :: (Eq a, RenderMessage site FormMessage, RenderMessage site msg)
-                => [(msg, a)]
-                -> Field (HandlerFor site) a
+bulmaSelectFieldList
+  :: (Eq a, RenderMessage site FormMessage, RenderMessage site msg)
+  => [(msg, a)]
+  -> Field (HandlerFor site) a
 bulmaSelectFieldList = bulmaSelectField . optionsPairs
 
 -- | Creates a @\<select>@ tag for selecting one option. Example usage:
 --
 -- > areq (selectField $ optionsPairs [(MsgValue1, "value1"),(MsgValue2, "value2")]) "Which value?" Nothing
-bulmaSelectField :: (Eq a, RenderMessage site FormMessage)
-            => HandlerFor site (OptionList a)
-            -> Field (HandlerFor site) a
+bulmaSelectField
+  :: (Eq a, RenderMessage site FormMessage)
+  => HandlerFor site (OptionList a)
+  -> Field (HandlerFor site) a
 bulmaSelectField = selectFieldHelper
   (\theId name attrs inside ->
     [whamlet| $newline never
@@ -229,36 +238,52 @@ bulmaSelectField = selectFieldHelper
 
 -- port from Yesod.Form.Fields
 selectFieldHelper
-        :: (Eq a, RenderMessage site FormMessage)
-        => (Text -> Text -> [(Text, Text)] -> WidgetFor site () -> WidgetFor site ())
-        -> (Text -> Text -> Bool -> WidgetFor site ())
-        -> (Text -> Text -> [(Text, Text)] -> Text -> Bool -> Text -> WidgetFor site ())
-        -> HandlerFor site (OptionList a)
-        -> Field (HandlerFor site) a
+  :: (Eq a, RenderMessage site FormMessage)
+  => (  Text
+     -> Text
+     -> [(Text, Text)]
+     -> WidgetFor site ()
+     -> WidgetFor site ()
+     )
+  -> (Text -> Text -> Bool -> WidgetFor site ())
+  -> (  Text
+     -> Text
+     -> [(Text, Text)]
+     -> Text
+     -> Bool
+     -> Text
+     -> WidgetFor site ()
+     )
+  -> HandlerFor site (OptionList a)
+  -> Field (HandlerFor site) a
 selectFieldHelper outside onOpt inside opts' = Field
-  { fieldParse = \x _ -> do
+  { fieldParse   = \x _ -> do
     opts <- opts'
     return $ selectParser opts x
-  , fieldView = \theId name attrs val isReq -> do
+  , fieldView    = \theId name attrs val isReq -> do
     opts <- olOptions <$> handlerToWidget opts'
     outside theId name attrs $ do
-      unless isReq $ onOpt theId name $ notElem (render opts val) $ map optionExternalValue opts
+      unless isReq $ onOpt theId name $ notElem (render opts val) $ map
+        optionExternalValue
+        opts
       forM_ opts $ \opt -> inside
         theId
         name
-        ((if isReq then (("required", "required"):) else id) attrs)
+        ((if isReq then (("required", "required") :) else id) attrs)
         (optionExternalValue opt)
         (render opts val == optionExternalValue opt)
         (optionDisplay opt)
   , fieldEnctype = UrlEncoded
   }
-  where
-    render _ (Left _) = ""
-    render opts (Right a) = maybe "" optionExternalValue $ listToMaybe $ filter ((== a) . optionInternalValue) opts
-    selectParser _ [] = Right Nothing
-    selectParser opts (s:_) = case s of
-            "" -> Right Nothing
-            "none" -> Right Nothing
-            x -> case olReadExternal opts x of
-                    Nothing -> Left $ SomeMessage $ MsgInvalidEntry x
-                    Just y  -> Right $ Just y
+ where
+  render _    (Left  _) = ""
+  render opts (Right a) = maybe "" optionExternalValue $ listToMaybe $ filter
+    ((== a) . optionInternalValue)
+    opts
+  selectParser _    []      = Right Nothing
+  selectParser opts (s : _) = case s of
+    ""     -> Right Nothing
+    "none" -> Right Nothing
+    x      -> case olReadExternal opts x of
+      Nothing -> Left $ SomeMessage $ MsgInvalidEntry x
+      Just y  -> Right $ Just y
