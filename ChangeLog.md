@@ -11,3 +11,4 @@
 - Add bulmaSelectFieldList
 - Add bulmaRadioField
 - Add bulmaRadioFieldList
+- Add bulmaIntField
