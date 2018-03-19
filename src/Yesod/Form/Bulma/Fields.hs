@@ -13,8 +13,13 @@ module Yesod.Form.Bulma.Fields
   , bulmaRadioField
   , bulmaSelectFieldList
   , bulmaSelectField
+  , bulmaCheckboxesFieldList
+  , bulmaCheckboxesField
+  , bulmaMultiSelectFieldList
+  , bulmaMultiSelectField
   ) where
 
+import           Control.Arrow            ((&&&))
 import           Control.Monad            (forM_, unless)
 import           Data.Maybe               (listToMaybe)
 import           Data.Text                (Text, pack)
@@ -31,6 +36,58 @@ import           Yesod.Form.Fields        (FormMessage (..), Option (..),
                                            optionsPairs)
 import           Yesod.Form.Functions     (parseHelper)
 import           Yesod.Form.Types         (Enctype (..), Field (..))
+
+-- | Creates an input with @type="checkbox"@ for selecting multiple options.
+bulmaCheckboxesFieldList
+  :: (Eq a, RenderMessage site msg) => [(msg, a)] -> Field (HandlerFor site) [a]
+bulmaCheckboxesFieldList = bulmaCheckboxesField . optionsPairs
+
+-- | Creates an input with @type="checkbox"@ for selecting multiple options.
+bulmaCheckboxesField
+  :: Eq a => HandlerFor site (OptionList a) -> Field (HandlerFor site) [a]
+bulmaCheckboxesField ioptlist = (bulmaMultiSelectField ioptlist)
+  { fieldView = \theId name attrs val _isReq -> do
+      opts <- fmap olOptions $ handlerToWidget ioptlist
+      let
+        optselected (Left _) _       = False
+        optselected (Right vals) opt = (optionInternalValue opt) `elem` vals
+      [whamlet| $newline never
+        <span ##{theId}>
+          $forall opt <- opts
+            <label>
+              <input .input type=checkbox name=#{name} value=#{optionExternalValue opt} *{attrs} :optselected val opt:checked>
+              #{optionDisplay opt}
+      |]
+  }
+
+-- | Creates a @\<select>@ tag for selecting multiple options.
+bulmaMultiSelectFieldList
+  :: (Eq a, RenderMessage site msg) => [(msg, a)] -> Field (HandlerFor site) [a]
+bulmaMultiSelectFieldList = bulmaMultiSelectField . optionsPairs
+
+-- | Creates a @\<select>@ tag for selecting multiple options.
+bulmaMultiSelectField
+  :: Eq a => HandlerFor site (OptionList a) -> Field (HandlerFor site) [a]
+bulmaMultiSelectField ioptlist = Field parse view UrlEncoded
+ where
+  parse []      _ = return $ Right Nothing
+  parse optlist _ = do
+    mapopt <- olReadExternal <$> ioptlist
+    case mapM mapopt optlist of
+      Nothing  -> return $ Left "Error parsing values"
+      Just res -> return $ Right $ Just res
+
+  view theId name attrs val isReq = do
+    opts <- fmap olOptions $ handlerToWidget ioptlist
+    let selOpts = map (id &&& (optselected val)) opts
+    [whamlet| $newline never
+      <select ##{theId} name=#{name} :isReq:required multiple *{attrs}>
+        $forall (opt, optsel) <- selOpts
+          <option value=#{optionExternalValue opt} :optsel:selected>#{optionDisplay opt}
+    |]
+    where
+      optselected (Left _) _       = False
+      optselected (Right vals) opt = (optionInternalValue opt) `elem` vals
 
 -- | Creates a input with @type="number"@ and @step=1@.
 bulmaIntField :: (Monad m, Integral i, RenderMessage (HandlerSite m) FormMessage) => Field m i
