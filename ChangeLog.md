@@ -12,3 +12,8 @@
 - Add bulmaRadioField
 - Add bulmaRadioFieldList
 - Add bulmaIntField
+- Add bulmaCheckboxesFieldList
+- Add bulmaCheckboxesField
+- Add bulmaMultiSelectFieldList
+- Add bulmaMultiSelectField
+- Add Showcases
