@@ -4,7 +4,8 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
 module Yesod.Form.Bulma.Fields
-  ( bulmaTextField
+  ( bulmaIntField
+  , bulmaTextField
   , bulmaEmailField
   , bulmaTextareaField
   , bulmaCheckBoxField
@@ -16,9 +17,10 @@ module Yesod.Form.Bulma.Fields
 
 import           Control.Monad            (forM_, unless)
 import           Data.Maybe               (listToMaybe)
-import           Data.Text                (Text)
+import           Data.Text                (Text, pack)
 import           Data.Text.Encoding       (decodeUtf8With, encodeUtf8)
 import           Data.Text.Encoding.Error (lenientDecode)
+import           Data.Text.Read           (decimal, signed)
 import qualified Text.Email.Validate      as Email
 import           Text.Shakespeare.I18N    (RenderMessage, SomeMessage (..))
 import           Yesod.Core               (HandlerSite)
@@ -29,6 +31,23 @@ import           Yesod.Form.Fields        (FormMessage (..), Option (..),
                                            optionsPairs)
 import           Yesod.Form.Functions     (parseHelper)
 import           Yesod.Form.Types         (Enctype (..), Field (..))
+
+-- | Creates a input with @type="number"@ and @step=1@.
+bulmaIntField :: (Monad m, Integral i, RenderMessage (HandlerSite m) FormMessage) => Field m i
+bulmaIntField = Field
+  { fieldParse = parseHelper $ \s ->
+    case signed decimal s of
+      Right (a, "") -> Right a
+      _             -> Left $ MsgInvalidInteger s
+  , fieldView = \theId name attrs val isReq ->
+      [whamlet| $newline never
+        <input id="#{theId}" .input name="#{name}" *{attrs} type="number" step=1 :isReq:required="" value="#{showVal val}">
+      |]
+  , fieldEnctype = UrlEncoded
+  }
+  where
+    showVal = either id (pack . showI)
+    showI x = show (fromIntegral x :: Integer)
 
 -- | Creates a input with @type="text"@.
 bulmaTextField :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Text
