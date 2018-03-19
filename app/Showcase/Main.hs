@@ -64,14 +64,12 @@ getHomeR = do
   defaultLayout $ do
     addStylesheetRemote "//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css"
     addScriptRemote "//use.fontawesome.com/releases/v5.0.8/js/all.js"
-    case result of
-      _ ->
-        [whamlet| $newline never
-          <section .section>
-            <div .container>
-              <form method=post action=@{HomeR} enctype=#{enctype}>
-                ^{form1}
-        |]
+    [whamlet| $newline never
+      <section .section>
+        <div .container>
+          <form method=post action=@{HomeR} enctype=#{enctype}>
+            ^{form1}
+    |]
 
 postHomeR :: Handler Html
 postHomeR = getHomeR
