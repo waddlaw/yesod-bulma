@@ -164,7 +164,7 @@ bulmaCheckBoxField msg = Field
   , fieldView  = \theId name attrs val _ ->
       [whamlet| $newline never
         <label .checkbox>
-          <input id=#{theId} *{attrs} type=checkbox name=#{name} value=yes :showVal id val:checked> #{msg}
+          <input id=#{theId} *{attrs} type=checkbox name=#{name} value=yes :showVal id val:checked>#{msg}
       |]
   , fieldEnctype = UrlEncoded
   }
