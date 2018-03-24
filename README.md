@@ -2,14 +2,14 @@
 
 ## Run
 
-```hs
+```sh
 $ stack build
 $ stack exec example
 ```
 
 Or
 
-```hs
+```sh
 $ stack build
 $ stack exec showcase
 ```
