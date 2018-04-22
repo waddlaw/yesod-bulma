@@ -17,6 +17,7 @@ mkYesod "App" [parseRoutes|
 |]
 
 instance Yesod App
+instance YesodBulma App
 
 instance RenderMessage App FormMessage where
   renderMessage _ _ = defaultFormMessage
@@ -62,9 +63,7 @@ getHomeR :: Handler Html
 getHomeR = do
   ((result, form1), enctype) <- runFormPost basicForm
 
-  defaultLayout $ do
-    addStylesheetRemote "//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css"
-    addScriptRemote "//use.fontawesome.com/releases/v5.0.8/js/all.js"
+  defaultLayout $
     case result of
       FormSuccess res ->
         [whamlet|

@@ -5,6 +5,7 @@
 {-# LANGUAGE TypeFamilies          #-}
 module Yesod.Form.Bulma
   ( module Yesod.Form.Bulma.Fields
+  , module Yesod.Form.Bulma.Class
   , renderBulma
   , bulmaSubmit
   , BulmaSubmit(..)
@@ -15,11 +16,13 @@ module Yesod.Form.Bulma
 import           Data.Bifunctor          (second)
 import           Data.Text               (Text)
 import           Text.Shakespeare.I18N   (RenderMessage)
-import           Yesod.Core              (HandlerSite, MonadHandler)
+import           Yesod.Core              (HandlerSite, HandlerFor, MonadHandler, addScriptRemote, addStylesheetRemote)
 import           Yesod.Core.Handler      (newIdent)
 import           Yesod.Core.Types        (WidgetFor)
 import           Yesod.Core.Widget       (whamlet)
 import           Yesod.Form.Bulma.Fields
+import           Yesod.Form.Bulma.Class
+import           Yesod.Form.Bulma.Utils (addStylesheet', addScript')
 import           Yesod.Form.Functions    (FormRender, aFormToForm, formToAForm)
 import           Yesod.Form.Types        (AForm, FieldSettings (..),
                                           FieldView (..), FormResult (..),
@@ -34,12 +37,14 @@ data BulmaSubmit msg =
     , _bulmaAttrs   :: [(Text, Text)] -- ^ Attributes added to the @\<button>@.
     } deriving Show
 
-renderBulma :: Monad m => BulmaFormLayout -> FormRender m a
+renderBulma :: YesodBulma site => BulmaFormLayout -> FormRender (HandlerFor site) a
 renderBulma formLayout aform fragment = do
   (res, views') <- aFormToForm aform
   let
     views = views' []
     widget = do
+      addStylesheet' urlBulmaCss
+      addScript' urlFontawesomeJs
       _cancelId <- newIdent
       [whamlet| $newline never
         #{fragment}
@@ -73,8 +78,7 @@ mbulmaSubmit
     => BulmaSubmit msg -> MForm m (FormResult (), FieldView site)
 mbulmaSubmit (BulmaSubmit msg classes attrs) =
     let res = FormSuccess ()
-        widget = [whamlet|
-            $newline never
+        widget = [whamlet|$newline never
             <button class="btn #{classes}" type=submit *{attrs}>_{msg}
           |]
         fv  = FieldView { fvLabel    = ""

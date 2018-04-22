@@ -18,6 +18,7 @@ mkYesod "App" [parseRoutes|
 |]
 
 instance Yesod App
+instance YesodBulma App
 
 instance RenderMessage App FormMessage where
   renderMessage _ _ = defaultFormMessage
@@ -84,8 +85,7 @@ getHomeR = do
   ((result, form1), enctype) <- runFormPost basicForm
 
   defaultLayout $ do
-    addStylesheetRemote "//cdnjs.cloudflare.com/ajax/libs/bulma/0.7.0/css/bulma.min.css"
-    addScriptRemote "//use.fontawesome.com/releases/v5.0.8/js/all.js"
+    -- addStylesheetRemote "//cdn.jsdelivr.net/npm/bulma-extensions@1.0.14/bulma-checkradio/dist/bulma-checkradio.min.css"
     [whamlet| $newline never
       <section .section>
         <div .container>
