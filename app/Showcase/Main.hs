@@ -84,7 +84,7 @@ getHomeR = do
   ((result, form1), enctype) <- runFormPost basicForm
 
   defaultLayout $ do
-    addStylesheetRemote "//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css"
+    addStylesheetRemote "//cdnjs.cloudflare.com/ajax/libs/bulma/0.7.0/css/bulma.min.css"
     addScriptRemote "//use.fontawesome.com/releases/v5.0.8/js/all.js"
     [whamlet| $newline never
       <section .section>
