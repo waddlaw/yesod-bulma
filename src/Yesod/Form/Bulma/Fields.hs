@@ -64,7 +64,7 @@ bulmaCheckboxesField ioptlist = (bulmaMultiSelectField ioptlist)
       [whamlet| $newline never
         <div ##{theId}>
           $forall opt <- opts
-            <input .is-checkradio type=checkbox id=#{name}-#{optionExternalValue opt} name=#{name}-#{optionExternalValue opt} value=#{optionExternalValue opt} *{attrs} :optselected val opt:checked>
+            <input .is-checkradio type=checkbox id=#{name}-#{optionExternalValue opt} name=#{name} value=#{optionExternalValue opt} *{attrs} :optselected val opt:checked>
             <label for=#{name}-#{optionExternalValue opt}>#{optionDisplay opt}
       |]
   }
