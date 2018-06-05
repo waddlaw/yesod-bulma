@@ -13,20 +13,15 @@ module Yesod.Form.Bulma
   , withPlaceholder
   ) where
 
-import           Data.Bifunctor          (second)
+import           Data.Bifunctor
 import           Data.Text               (Text)
-import           Text.Shakespeare.I18N   (RenderMessage)
-import           Yesod.Core              (HandlerSite, HandlerFor, MonadHandler, addScriptRemote, addStylesheetRemote)
-import           Yesod.Core.Handler      (newIdent)
-import           Yesod.Core.Types        (WidgetFor)
-import           Yesod.Core.Widget       (whamlet)
-import           Yesod.Form.Bulma.Fields
+import           Text.Shakespeare.I18N
+import           Yesod.Core
 import           Yesod.Form.Bulma.Class
-import           Yesod.Form.Bulma.Utils (addStylesheet', addScript')
-import           Yesod.Form.Functions    (FormRender, aFormToForm, formToAForm)
-import           Yesod.Form.Types        (AForm, FieldSettings (..),
-                                          FieldView (..), FormResult (..),
-                                          MForm)
+import           Yesod.Form.Bulma.Fields
+import           Yesod.Form.Bulma.Utils
+import           Yesod.Form.Functions
+import           Yesod.Form.Types
 
 data BulmaFormLayout = BulmaBasicForm
 

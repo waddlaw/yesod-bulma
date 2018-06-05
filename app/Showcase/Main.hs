@@ -76,7 +76,7 @@ basicForm = renderBulma BulmaBasicForm $ Basic
 
 getHomeR :: Handler Html
 getHomeR = do
-  ((result, form1), enctype) <- runFormPost basicForm
+  ((_result, form1), enctype) <- runFormPost basicForm
 
   defaultLayout
     [whamlet| $newline never
