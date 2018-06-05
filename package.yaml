@@ -5,8 +5,8 @@ license:             BSD3
 author:              "Shinya Yamaguchi"
 maintainer:          "ingroze@gmail.com"
 copyright:           "Copyright (c) 2018 Shinya Yamaguchi"
-synopsis: support Bulma form for Yesod
-category:        Web, Yesod
+synopsis:            support Bulma form for Yesod
+category:            Web, Yesod
 
 extra-source-files:
 - README.md
