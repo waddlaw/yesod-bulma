@@ -78,7 +78,7 @@ getHomeR :: Handler Html
 getHomeR = do
   ((result, form1), enctype) <- runFormPost basicForm
 
-  defaultLayout $
+  defaultLayout
     [whamlet| $newline never
       <section .section>
         <div .container>

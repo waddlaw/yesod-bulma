@@ -56,10 +56,10 @@ bulmaCheckboxesField
   => HandlerFor site (OptionList a) -> Field (HandlerFor site) [a]
 bulmaCheckboxesField ioptlist = (bulmaMultiSelectField ioptlist)
   { fieldView = \theId name attrs val _isReq -> do
-      opts <- fmap olOptions $ handlerToWidget ioptlist
+      opts <- olOptions <$> handlerToWidget ioptlist
       let
         optselected (Left _) _       = False
-        optselected (Right vals) opt = (optionInternalValue opt) `elem` vals
+        optselected (Right vals) opt = optionInternalValue opt `elem` vals
       addStylesheet' urlBulmaExCheckRadio
       [whamlet| $newline never
         <div ##{theId}>
@@ -91,8 +91,8 @@ bulmaMultiSelectField ioptlist = Field parse view UrlEncoded
       Just res -> return $ Right $ Just res
 
   view theId name attrs val isReq = do
-    opts <- fmap olOptions $ handlerToWidget ioptlist
-    let selOpts = map (id &&& (optselected val)) opts
+    opts <- olOptions <$> handlerToWidget ioptlist
+    let selOpts = map (id &&& optselected val) opts
     [whamlet| $newline never
       <div .select .is-multiple>
         <select ##{theId} name=#{name} :isReq:required multiple size=#{min 5 (length selOpts)} *{attrs}>
@@ -101,7 +101,7 @@ bulmaMultiSelectField ioptlist = Field parse view UrlEncoded
     |]
     where
       optselected (Left _) _       = False
-      optselected (Right vals) opt = (optionInternalValue opt) `elem` vals
+      optselected (Right vals) opt = optionInternalValue opt `elem` vals
 
 -- | Creates a input with @type="number"@ and @step=1@.
 bulmaIntField
@@ -201,7 +201,7 @@ bulmaCheckBoxField msg = Field
         "yes" -> Right $ Just True
         "on"  -> Right $ Just True
         _     -> Right $ Just False
-    showVal = either (\_ -> False)
+    showVal = either (const False)
 
 -- | Creates an input with @type="radio"@ for selecting one option.
 bulmaRadioFieldList
