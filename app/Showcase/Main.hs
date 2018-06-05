@@ -58,34 +58,27 @@ colors :: [(Text, Color)]
 colors = map (pack . show &&& id) [minBound .. maxBound]
 
 basicForm :: Html -> MForm Handler (FormResult Basic, Widget)
-basicForm =
-  renderBulma BulmaBasicForm
-    $   Basic
-    <$> areq bulmaTextField "bulmaTextField" Nothing
-    <*> areq bulmaTextareaField "bulmaTextareaField" Nothing
-    <*> areq bulmaIntField "bulmaIntField" Nothing
-    <*> areq bulmaEmailField "bulmaEmailField" Nothing
-    <*> areq (bulmaCheckBoxField "bulmaCheckBoxField") "" Nothing
-    <*> areq (bulmaSelectField optionsEnum) "bulmaSelectField" Nothing
-    <*> areq (bulmaSelectFieldList colors) "bulmaSelectFieldList" Nothing
-    <*> areq (bulmaRadioFieldList colors) "bulmaRadioList" Nothing
-    <*> areq (bulmaRadioFieldList colors) "bulmaRadioFieldList" Nothing
-    <*> areq (bulmaCheckboxesField optionsEnum) "bulmaCheckboxesField" Nothing
-    <*> areq (bulmaCheckboxesFieldList colors) "bulmaCheckboxesFieldList" Nothing
-    <*> areq (bulmaMultiSelectField optionsEnum) "bulmaMultiSelectField" Nothing
-    <*> areq (bulmaMultiSelectFieldList colors) "bulmaMultiSelectFieldList" Nothing
-    <*  bulmaSubmit
-          (BulmaSubmit ("保存" :: Text)
-                       "btn-default"
-                       [("attribute-name", "attribute-value")]
-          )
+basicForm = renderBulma BulmaBasicForm $ Basic
+  <$> areq bulmaTextField "bulmaTextField" Nothing
+  <*> areq bulmaTextareaField "bulmaTextareaField" Nothing
+  <*> areq bulmaIntField "bulmaIntField" Nothing
+  <*> areq bulmaEmailField "bulmaEmailField" Nothing
+  <*> areq (bulmaCheckBoxField "bulmaCheckBoxField") "" Nothing
+  <*> areq (bulmaSelectField optionsEnum) "bulmaSelectField" Nothing
+  <*> areq (bulmaSelectFieldList colors) "bulmaSelectFieldList" Nothing
+  <*> areq (bulmaRadioFieldList colors) "bulmaRadioList" Nothing
+  <*> areq (bulmaRadioFieldList colors) "bulmaRadioFieldList" Nothing
+  <*> areq (bulmaCheckboxesField optionsEnum) "bulmaCheckboxesField" Nothing
+  <*> areq (bulmaCheckboxesFieldList colors) "bulmaCheckboxesFieldList" Nothing
+  <*> areq (bulmaMultiSelectField optionsEnum) "bulmaMultiSelectField" Nothing
+  <*> areq (bulmaMultiSelectFieldList colors) "bulmaMultiSelectFieldList" Nothing
+  <*  bulmaSubmit (BulmaSubmit ("Submit" :: Text) "btn-default" [("attribute-name", "attribute-value")])
 
 getHomeR :: Handler Html
 getHomeR = do
   ((result, form1), enctype) <- runFormPost basicForm
 
-  defaultLayout $ do
-    -- addStylesheetRemote "//cdn.jsdelivr.net/npm/bulma-extensions@1.0.14/bulma-checkradio/dist/bulma-checkradio.min.css"
+  defaultLayout $
     [whamlet| $newline never
       <section .section>
         <div .container>

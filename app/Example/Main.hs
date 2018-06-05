@@ -33,31 +33,15 @@ data Basic = Basic
   }
 
 basicForm :: Html -> MForm Handler (FormResult Basic, Widget)
-basicForm =
-  renderBulma BulmaBasicForm
-    $   Basic
-    <$> areq bulmaTextField  ("Text input" `withPlaceholder` "Name")   Nothing
-    <*> areq bulmaTextField  ("bulma" `withPlaceholder` "Username")    Nothing
-    <*> areq bulmaEmailField ("Email input" `withPlaceholder` "Email") Nothing
-    <*> areq
-          (bulmaSelectFieldList
-            [("Select dropdown" :: Text, "v1"), ("With options", "vv2")]
-          )
-          "Subject"
-          Nothing
-    <*> areq bulmaTextareaField ("Textarea" `withPlaceholder` "Message") Nothing
-    <*> areq (bulmaCheckBoxField "I agree to the terms and conditions")
-             ""
-             Nothing
-    <*> areq (bulmaRadioFieldList [("yes" :: Text, "y"), ("no", "n")])
-             ""
-             Nothing
-    <*  bulmaSubmit
-          (BulmaSubmit ("保存" :: Text)
-                       "btn-default"
-                       [("attribute-name", "attribute-value")]
-          )
-
+basicForm = renderBulma BulmaBasicForm $ Basic
+  <$> areq bulmaTextField ("Text input" `withPlaceholder` "Name") Nothing
+  <*> areq bulmaTextField ("bulma" `withPlaceholder` "Username") Nothing
+  <*> areq bulmaEmailField ("Email input" `withPlaceholder` "Email") Nothing
+  <*> areq (bulmaSelectFieldList [("Select dropdown" :: Text, "v1"), ("With options", "v2")] ) "Subject" Nothing
+  <*> areq bulmaTextareaField ("Textarea" `withPlaceholder` "Message") Nothing
+  <*> areq (bulmaCheckBoxField "I agree to the terms and conditions") "" Nothing
+  <*> areq (bulmaRadioFieldList [("yes" :: Text, "y"), ("no", "n")]) "" Nothing
+  <*  bulmaSubmit (BulmaSubmit ("Submit" :: Text) "btn-default" [("attribute-name", "attribute-value")])
 
 getHomeR :: Handler Html
 getHomeR = do
@@ -88,11 +72,6 @@ getHomeR = do
             <div .container>
               <form method=post action=@{HomeR} enctype=#{enctype}>
                 ^{form1}
-
-          <section .section>
-            <div .container>
-              <table .table>
-                <th>Name</th><td>
         |]
 
 postHomeR :: Handler Html
