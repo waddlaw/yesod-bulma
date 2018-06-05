@@ -278,7 +278,7 @@ selectFieldHelper
   :: ( Eq a
      , RenderMessage site FormMessage
      )
-  => (Text -> Text -> [(Text, Text)] -> WidgetFor site () -> WidgetFor site ()
+  => (Text -> Text -> [(Text, Text)] -> WidgetFor site () -> WidgetFor site ())
   -> (Text -> Text -> Bool -> WidgetFor site ())
   -> (Text -> Text -> [(Text, Text)] -> Text -> Bool -> Text -> WidgetFor site ())
   -> HandlerFor site (OptionList a)
@@ -302,15 +302,15 @@ selectFieldHelper outside onOpt inside opts' = Field
         (optionDisplay opt)
   , fieldEnctype = UrlEncoded
   }
- where
-  render _    (Left  _) = ""
-  render opts (Right a) = maybe "" optionExternalValue $ listToMaybe $ filter
-    ((== a) . optionInternalValue)
-    opts
-  selectParser _    []      = Right Nothing
-  selectParser opts (s : _) = case s of
-    ""     -> Right Nothing
-    "none" -> Right Nothing
-    x      -> case olReadExternal opts x of
-      Nothing -> Left $ SomeMessage $ MsgInvalidEntry x
-      Just y  -> Right $ Just y
+  where
+    render _    (Left  _) = ""
+    render opts (Right a) = maybe "" optionExternalValue $ listToMaybe $ filter
+      ((== a) . optionInternalValue)
+      opts
+    selectParser _    []      = Right Nothing
+    selectParser opts (s : _) = case s of
+      ""     -> Right Nothing
+      "none" -> Right Nothing
+      x      -> case olReadExternal opts x of
+        Nothing -> Left $ SomeMessage $ MsgInvalidEntry x
+        Just y  -> Right $ Just y
