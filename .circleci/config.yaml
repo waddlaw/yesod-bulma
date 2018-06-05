@@ -35,6 +35,7 @@ jobs:
           key: stack-{{ .Environment.COMMON_CACHE_KEY }}-{{ checksum "stack.yaml" }}-{{ checksum "package.yaml" }}
           paths:
             - .circleci/code/.stack-work
+
 workflows:
   version: 2
   hlint-pedantic:
