@@ -1,8 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Yesod.Form.Bulma.Class
-where
+  ( YesodBulma
+  , urlBulmaCss
+  , urlBulmaExCheckRadio
+  , urlFontawesomeJs
+  ) where
 
-import           Data.Text                                ( Text )
+import           Data.Text  (Text)
 import           Yesod.Core
 
 class YesodBulma a where
