@@ -13,12 +13,12 @@ extra-source-files:
 description:         Please see the README on Github at <https://github.com/waddlaw/yesod-form-bulma#readme>
 
 dependencies:
-- base >= 4.7 && < 5
-- text
-- yesod-form
-- shakespeare
-- yesod-core
+- base
 - email-validate
+- shakespeare
+- text
+- yesod-core
+- yesod-form
 
 library:
   source-dirs: src
@@ -39,8 +39,8 @@ executables:
 
 tests:
   yesod-form-bulma-test:
-    main:                Spec.hs
-    source-dirs:         test
+    main: Spec.hs
+    source-dirs: test
     ghc-options:
     - -threaded
     - -rtsopts
