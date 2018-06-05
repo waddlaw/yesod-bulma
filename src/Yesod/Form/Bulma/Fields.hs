@@ -31,22 +31,29 @@ import           Text.Shakespeare.I18N    (RenderMessage, SomeMessage (..))
 import           Yesod.Core               (HandlerSite)
 import           Yesod.Core.Types         (HandlerFor, WidgetFor)
 import           Yesod.Core.Widget        (handlerToWidget, whamlet)
+import           Yesod.Form.Bulma.Class
+import           Yesod.Form.Bulma.Utils   (addStylesheet')
 import           Yesod.Form.Fields        (FormMessage (..), Option (..),
                                            OptionList (..), Textarea (..),
                                            optionsPairs)
 import           Yesod.Form.Functions     (parseHelper)
 import           Yesod.Form.Types         (Enctype (..), Field (..))
-import Yesod.Form.Bulma.Class
-import           Yesod.Form.Bulma.Utils (addStylesheet')
 
 -- | Creates an input with @type="checkbox"@ for selecting multiple options.
 bulmaCheckboxesFieldList
-  :: (YesodBulma site, Eq a, RenderMessage site msg) => [(msg, a)] -> Field (HandlerFor site) [a]
+  :: ( YesodBulma site
+     , Eq a
+     , RenderMessage site msg
+     )
+  => [(msg, a)] -> Field (HandlerFor site) [a]
 bulmaCheckboxesFieldList = bulmaCheckboxesField . optionsPairs
 
 -- | Creates an input with @type="checkbox"@ for selecting multiple options.
 bulmaCheckboxesField
-  :: (YesodBulma site, Eq a) => HandlerFor site (OptionList a) -> Field (HandlerFor site) [a]
+  :: ( YesodBulma site
+     , Eq a
+     )
+  => HandlerFor site (OptionList a) -> Field (HandlerFor site) [a]
 bulmaCheckboxesField ioptlist = (bulmaMultiSelectField ioptlist)
   { fieldView = \theId name attrs val _isReq -> do
       opts <- fmap olOptions $ handlerToWidget ioptlist
@@ -64,12 +71,16 @@ bulmaCheckboxesField ioptlist = (bulmaMultiSelectField ioptlist)
 
 -- | Creates a @\<select>@ tag for selecting multiple options.
 bulmaMultiSelectFieldList
-  :: (Eq a, RenderMessage site msg) => [(msg, a)] -> Field (HandlerFor site) [a]
+  :: ( Eq a
+     , RenderMessage site msg
+     )
+  => [(msg, a)] -> Field (HandlerFor site) [a]
 bulmaMultiSelectFieldList = bulmaMultiSelectField . optionsPairs
 
 -- | Creates a @\<select>@ tag for selecting multiple options.
 bulmaMultiSelectField
-  :: Eq a => HandlerFor site (OptionList a) -> Field (HandlerFor site) [a]
+  :: Eq a
+  => HandlerFor site (OptionList a) -> Field (HandlerFor site) [a]
 bulmaMultiSelectField ioptlist = Field parse view UrlEncoded
  where
   parse []      _ = return $ Right Nothing
@@ -94,7 +105,10 @@ bulmaMultiSelectField ioptlist = Field parse view UrlEncoded
 
 -- | Creates a input with @type="number"@ and @step=1@.
 bulmaIntField
-  :: (Monad m, Integral i, RenderMessage (HandlerSite m) FormMessage)
+  :: ( Monad m
+     , Integral i
+     , RenderMessage (HandlerSite m) FormMessage
+     )
   => Field m i
 bulmaIntField = Field
   { fieldParse = parseHelper $ \s ->
@@ -113,7 +127,10 @@ bulmaIntField = Field
 
 -- | Creates a input with @type="text"@.
 bulmaTextField
-  :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Text
+  :: ( Monad m
+     , RenderMessage (HandlerSite m) FormMessage
+     )
+  => Field m Text
 bulmaTextField = Field
   { fieldParse = parseHelper Right
   , fieldView = \theId name attrs val isReq ->
@@ -125,7 +142,10 @@ bulmaTextField = Field
 
 -- | Creates an input with @type="email"@. Yesod will validate the email's correctness according to RFC5322 and canonicalize it by removing comments and whitespace (see "Text.Email.Validate").
 bulmaEmailField
-  :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Text
+  :: ( Monad m
+     , RenderMessage (HandlerSite m) FormMessage
+     )
+  => Field m Text
 bulmaEmailField = Field
   { fieldParse = parseHelper $
     \s ->
@@ -141,7 +161,10 @@ bulmaEmailField = Field
 
 -- | Creates a @\<textarea>@ tag whose returned value is wrapped in a 'Textarea'; see 'Textarea' for details.
 bulmaTextareaField
-  :: Monad m => RenderMessage (HandlerSite m) FormMessage => Field m Textarea
+  :: ( Monad m
+     , RenderMessage (HandlerSite m) FormMessage
+     )
+  => Field m Textarea
 bulmaTextareaField = Field
   { fieldParse = parseHelper $ Right . Textarea
   , fieldView = \theId name attrs val isReq ->
@@ -159,7 +182,9 @@ bulmaTextareaField = Field
 --
 --   Note that this makes the field always optional.
 --
-bulmaCheckBoxField :: YesodBulma site => Text -> Field (HandlerFor site) Bool
+bulmaCheckBoxField
+  :: YesodBulma site
+  => Text -> Field (HandlerFor site) Bool
 bulmaCheckBoxField msg = Field
   { fieldParse = \e _ -> return $ checkBoxParser e
   , fieldView  = \theId name attrs val _ -> do
@@ -180,16 +205,21 @@ bulmaCheckBoxField msg = Field
 
 -- | Creates an input with @type="radio"@ for selecting one option.
 bulmaRadioFieldList
-  :: (YesodBulma site, Eq a, RenderMessage site FormMessage, RenderMessage site msg)
-  => [(msg, a)]
-  -> Field (HandlerFor site) a
+  :: ( YesodBulma site
+     , Eq a
+     , RenderMessage site FormMessage
+     , RenderMessage site msg
+     )
+  => [(msg, a)] -> Field (HandlerFor site) a
 bulmaRadioFieldList = bulmaRadioField . optionsPairs
 
 -- | Creates an input with @type="radio"@ for selecting one option.
 bulmaRadioField
-  :: (YesodBulma site, Eq a, RenderMessage site FormMessage)
-  => HandlerFor site (OptionList a)
-  -> Field (HandlerFor site) a
+  :: ( YesodBulma site
+     , Eq a
+     , RenderMessage site FormMessage
+     )
+  => HandlerFor site (OptionList a) -> Field (HandlerFor site) a
 bulmaRadioField = selectFieldHelper
   (\theId _name _attrs inside -> do
     addStylesheet' urlBulmaExCheckRadio
@@ -213,9 +243,11 @@ bulmaRadioField = selectFieldHelper
 --
 -- > areq (selectFieldList [("Value 1" :: Text, "value1"),("Value 2", "value2")]) "Which value?" Nothing
 bulmaSelectFieldList
-  :: (Eq a, RenderMessage site FormMessage, RenderMessage site msg)
-  => [(msg, a)]
-  -> Field (HandlerFor site) a
+  :: ( Eq a
+     , RenderMessage site FormMessage
+     , RenderMessage site msg
+     )
+  => [(msg, a)] -> Field (HandlerFor site) a
 bulmaSelectFieldList = bulmaSelectField . optionsPairs
 
 -- | Creates a @\<select>@ tag for selecting one option. Example usage:
@@ -243,22 +275,12 @@ bulmaSelectField = selectFieldHelper
 
 -- port from Yesod.Form.Fields
 selectFieldHelper
-  :: (Eq a, RenderMessage site FormMessage)
-  => (  Text
-     -> Text
-     -> [(Text, Text)]
-     -> WidgetFor site ()
-     -> WidgetFor site ()
+  :: ( Eq a
+     , RenderMessage site FormMessage
      )
+  => (Text -> Text -> [(Text, Text)] -> WidgetFor site () -> WidgetFor site ()
   -> (Text -> Text -> Bool -> WidgetFor site ())
-  -> (  Text
-     -> Text
-     -> [(Text, Text)]
-     -> Text
-     -> Bool
-     -> Text
-     -> WidgetFor site ()
-     )
+  -> (Text -> Text -> [(Text, Text)] -> Text -> Bool -> Text -> WidgetFor site ())
   -> HandlerFor site (OptionList a)
   -> Field (HandlerFor site) a
 selectFieldHelper outside onOpt inside opts' = Field
