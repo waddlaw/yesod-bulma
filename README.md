@@ -3,6 +3,11 @@
 - [Bulma](https://bulma.io/documentation/form/)
 - [Bulma-Extensions](https://wikiki.github.io/form/checkradio/)
 
+
+## Screenshot
+
+![a](https://i.imgur.com/SZnv42b.png)
+
 ## Run
 
 ```sh
