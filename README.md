@@ -10,12 +10,14 @@
 
 ## Run
 
+simple example.
+
 ```sh
 $ stack build
 $ stack exec example
 ```
 
-Or
+full components showcase.
 
 ```sh
 $ stack build
