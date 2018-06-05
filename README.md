@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/waddlaw/yesod-form-bulma/tree/master.svg?style=svg)](https://circleci.com/gh/waddlaw/yesod-form-bulma/tree/master)
+
 # yesod-form-bulma
 
 - [Bulma](https://bulma.io/documentation/form/)
