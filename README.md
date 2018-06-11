@@ -1,10 +1,10 @@
 [![CircleCI](https://circleci.com/gh/waddlaw/yesod-form-bulma/tree/master.svg?style=svg)](https://circleci.com/gh/waddlaw/yesod-form-bulma/tree/master)
+[![Hackage](https://img.shields.io/hackage/v/yesod-form-bulma.svg)](https://hackage.haskell.org/package/yesod-form-bulma)
 
 # yesod-form-bulma
 
 - [Bulma](https://bulma.io/documentation/form/)
 - [Bulma-Extensions](https://wikiki.github.io/form/checkradio/)
-
 
 ## Screenshot
 
