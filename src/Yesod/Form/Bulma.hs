@@ -47,7 +47,7 @@ renderBulma formLayout aform fragment = do
           $if fvId view == bulmaSubmitId
             <div .field .is-grouped>
               <div .control>
-                #{fvInput view}
+                ^{fvInput view}
           $else
             <div .field
                  :fvRequired view:.required
