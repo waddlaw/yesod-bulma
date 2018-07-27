@@ -47,7 +47,7 @@ renderBulma formLayout aform fragment = do
           $if fvId view == bulmaSubmitId
             <div .field .is-grouped>
               <div .control>
-                <button .button .is-link>Submit
+                #{fvInput view}
           $else
             <div .field
                  :fvRequired view:.required
@@ -66,7 +66,7 @@ renderBulma formLayout aform fragment = do
     has Nothing  = False
 
 bulmaSubmit :: (RenderMessage site msg, HandlerSite m ~ site, MonadHandler m) => BulmaSubmit msg -> AForm m ()
-bulmaSubmit= formToAForm . fmap (second return) . mbulmaSubmit
+bulmaSubmit = formToAForm . fmap (second return) . mbulmaSubmit
 
 mbulmaSubmit
     :: (RenderMessage site msg, HandlerSite m ~ site, MonadHandler m)
@@ -74,7 +74,7 @@ mbulmaSubmit
 mbulmaSubmit (BulmaSubmit msg classes attrs) =
     let res = FormSuccess ()
         widget = [whamlet|$newline never
-            <button class="btn #{classes}" type=submit *{attrs}>_{msg}
+            <button class="button is-link #{classes}" type=submit *{attrs}>_{msg}
           |]
         fv  = FieldView { fvLabel    = ""
                         , fvTooltip  = Nothing
