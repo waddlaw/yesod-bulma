@@ -1,7 +1,7 @@
 [![CircleCI](https://circleci.com/gh/waddlaw/yesod-form-bulma/tree/master.svg?style=svg)](https://circleci.com/gh/waddlaw/yesod-form-bulma/tree/master)
 [![Hackage](https://img.shields.io/hackage/v/yesod-form-bulma.svg)](https://hackage.haskell.org/package/yesod-form-bulma)
 
-# yesod-form-bulma
+# yesod-bulma
 
 - [Bulma](https://bulma.io/documentation/form/)
 - [Bulma-Extensions](https://wikiki.github.io/form/checkradio/)
@@ -30,7 +30,12 @@ Access to [localhost:3100](http://localhost:3100)
 
 ## Implemented status
 
-### Yesod.Form.Fields
+### Yesod.Paginator.Bulma
+
+- [ ] simple
+- [ ] ellipsed
+
+### Yesod.Form
 
 #### Fields
 
