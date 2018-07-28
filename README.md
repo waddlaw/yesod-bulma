@@ -10,20 +10,20 @@
 
 ![a](https://i.imgur.com/SZnv42b.png)
 
-## Run
+## Examples
 
-simple example.
+simple form example.
 
 ```sh
 $ stack build
-$ stack exec example
+$ stack exec form-example
 ```
 
 full components showcase.
 
 ```sh
 $ stack build
-$ stack exec showcase
+$ stack exec form-showcase
 ```
 
 Access to [localhost:3100](http://localhost:3100)

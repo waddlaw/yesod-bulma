@@ -35,15 +35,13 @@ library:
   source-dirs: src
 
 executables:
-  example:
-    main: Main.hs
-    source-dirs: app/Example
+  form-example:
+    main: app/Example.hs
     dependencies:
       - yesod-form-bulma
       - yesod
-  showcase:
-    main: Main.hs
-    source-dirs: app/Showcase
+  form-showcase:
+    main: app/Showcase.hs
     dependencies:
       - yesod-form-bulma
       - yesod
