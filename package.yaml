@@ -18,8 +18,10 @@ dependencies:
 - email-validate
 - shakespeare
 - text
+- uri-encode
 - yesod-core
 - yesod-form
+- yesod-paginator
 
 ghc-options:
 - -Wall
