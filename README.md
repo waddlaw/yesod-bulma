@@ -28,6 +28,11 @@ $ stack exec form-showcase
 
 Access to [localhost:3100](http://localhost:3100)
 
+```sh
+$ stack build
+$ stack exec paginator-example
+```
+
 ## Implemented status
 
 ### Yesod.Paginator.Bulma

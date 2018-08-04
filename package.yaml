@@ -1,4 +1,5 @@
 name:                yesod-bulma
+version:             0.2.0.0
 github:              "waddlaw/yesod-bulma"
 license:             BSD3
 author:              "Shinya Yamaguchi"
@@ -43,6 +44,11 @@ executables:
       - yesod
   form-showcase:
     main: app/Showcase.hs
+    dependencies:
+      - yesod-bulma
+      - yesod
+  paginator-example:
+    main: app/Paginator.hs
     dependencies:
       - yesod-bulma
       - yesod
