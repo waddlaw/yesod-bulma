@@ -17,4 +17,4 @@ class YesodBulma a where
   urlBulmaExCheckRadio _ = Right "//cdn.jsdelivr.net/npm/bulma-extensions@1.0.30/bulma-checkradio/dist/bulma-checkradio.min.css"
 
   urlFontawesomeJs :: a -> Either (Route a) Text
-  urlFontawesomeJs _ = Right "//use.fontawesome.com/releases/v5.0.13/js/all.js"
+  urlFontawesomeJs _ = Right "//use.fontawesome.com/releases/v5.2.0/js/all.js"
