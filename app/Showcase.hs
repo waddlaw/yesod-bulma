@@ -6,10 +6,10 @@
 {-# OPTIONS_GHC -fno-warn-unused-top-binds #-}
 module Main (main) where
 
-import           Control.Arrow    ((&&&))
-import           Data.Text        (Text, pack)
+import           Control.Arrow ((&&&))
+import           Data.Text     (Text, pack)
 import           Yesod
-import           Yesod.Form.Bulma
+import           Yesod.Bulma
 
 data App = App
 
@@ -24,30 +24,30 @@ instance RenderMessage App FormMessage where
   renderMessage _ _ = defaultFormMessage
 
 data Basic = Basic
-  { getTextField       :: Text
+  { getTextField            :: Text
   -- , getPasswordField :: Text
-  , getTextareaField   :: Textarea
+  , getTextareaField        :: Textarea
   -- , getHiddenField  :: Text
-  , getIntField        :: Int
+  , getIntField             :: Int
   -- , getDayField    :: Day
   -- , getTimeFieldTypeTime :: Text
   -- , getTimeFieldTypeText
   -- , getHtmlField
-  , getEmailField      :: Text
+  , getEmailField           :: Text
   -- , getMultiEmailField
   -- , getSearchField
   -- , getUrlField
   -- , getDoubleField
   -- , getBoolField
-  , getCheckBoxField   :: Bool
+  , getCheckBoxField        :: Bool
   -- , getFileField
-  , getSelectField     :: Color
-  , getSelectFieldList :: Color
-  , getRadioField :: Color
-  , getRadioFieldList :: Color
-  , getCheckboxesField :: [Color]
-  , getCheckboxesFieldList :: [Color]
-  , getMultiSelectField :: [Color]
+  , getSelectField          :: Color
+  , getSelectFieldList      :: Color
+  , getRadioField           :: Color
+  , getRadioFieldList       :: Color
+  , getCheckboxesField      :: [Color]
+  , getCheckboxesFieldList  :: [Color]
+  , getMultiSelectField     :: [Color]
   , getMultiSelectFieldList :: [Color]
   }
 

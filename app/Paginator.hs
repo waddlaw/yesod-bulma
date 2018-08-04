@@ -8,9 +8,7 @@
 module Main (main) where
 
 import           Yesod
-import           Yesod.Form.Bulma
-import           Yesod.Form.Bulma.Utils
-import           Yesod.Paginator.Bulma
+import           Yesod.Bulma
 
 data App = App
 
@@ -28,8 +26,6 @@ getRootR = do
     pages <- paginate 3 things'
 
     defaultLayout $ do
-      addStylesheet' urlBulmaCss
-      addScript' urlFontawesomeJs
       setTitle "Paginator Example"
       [whamlet| $newline never
         <section .section>
