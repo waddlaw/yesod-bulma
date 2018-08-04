@@ -1,24 +1,25 @@
-{-# LANGUAGE QuasiQuotes #-}
-module Yesod.Paginator.Bulma
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE QuasiQuotes       #-}
+module Yesod.Bulma.Paginator
   ( simple
   , ellipsed
+  , getCurrentPage
   , module X
   ) where
 
 import           Yesod.Paginator.Prelude
 
+import           Yesod.Bulma.Class
+import           Yesod.Bulma.Paginator.Internal
+import           Yesod.Bulma.Utils
 import           Yesod.Core
-import           Yesod.Form.Bulma.Class
-import           Yesod.Form.Bulma.Utils
-import           Yesod.Paginator          as X hiding (ellipsed, simple)
-import           Yesod.Paginator.Internal
+import           Yesod.Paginator                as X hiding (ellipsed, simple)
 import           Yesod.Paginator.Pages
-import           Yesod.Paginator.Widgets  (PaginationWidget)
+import           Yesod.Paginator.Widgets        (PaginationWidget)
 
 simple :: YesodBulma site => Natural -> PaginationWidget site a
 simple elements pages = do
-  addStylesheet' urlBulmaCss
-  addScript' urlFontawesomeJs
+  addBulmaResource
   updateGetParams <- getUpdateGetParams
 
   let (prevPages, nextPages) = getBalancedPages elements pages
@@ -50,8 +51,7 @@ simple elements pages = do
 -- | Show pages before and after, ellipsis, and first/last
 ellipsed :: YesodBulma site => Natural -> PaginationWidget site a
 ellipsed elements pages = do
-  addStylesheet' urlBulmaCss
-  addScript' urlFontawesomeJs
+  addBulmaResource
   updateGetParams <- getUpdateGetParams
 
   let (prevPages, nextPages) = getBalancedPages elements pages
@@ -106,3 +106,9 @@ ellipsed elements pages = do
         <li>
           <a .pagination-link href=#{renderGetParams $ updateGetParams lastPage}>#{lastPage}
   |]
+
+getCurrentPage :: MonadHandler m => m PageNumber
+getCurrentPage = fromMaybe 1 . go <$> lookupGetParam "p"
+  where
+    go :: Maybe Text -> Maybe PageNumber
+    go mp = readIntegral . unpack =<< mp

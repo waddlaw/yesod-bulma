@@ -1,7 +1,11 @@
 module Yesod.Bulma
-  ( module Yesod.Form.Bulma
-  , module Yesod.Paginator.Bulma
+  ( module Yesod.Bulma.Form
+  , module Yesod.Bulma.Paginator
+  , module Yesod.Bulma.Class
+  , module Yesod.Bulma.Utils
   ) where
 
-import           Yesod.Form.Bulma
-import           Yesod.Paginator.Bulma
+import           Yesod.Bulma.Class
+import           Yesod.Bulma.Form
+import           Yesod.Bulma.Paginator
+import           Yesod.Bulma.Utils

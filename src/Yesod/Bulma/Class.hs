@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Yesod.Form.Bulma.Class
+module Yesod.Bulma.Class
   ( YesodBulma
   , urlBulmaCss
   , urlBulmaExCheckRadio

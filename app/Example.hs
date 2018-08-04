@@ -6,9 +6,10 @@
 {-# OPTIONS_GHC -fno-warn-unused-top-binds #-}
 module Main (main) where
 
-import           Data.Text   (Text)
 import           Yesod
 import           Yesod.Bulma
+
+import           Data.Text   (Text)
 
 data App = App
 

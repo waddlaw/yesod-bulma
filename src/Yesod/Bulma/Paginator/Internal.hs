@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Yesod.Paginator.Internal
+module Yesod.Bulma.Paginator.Internal
   ( renderGetParams
   , getBalancedPages
   , getUpdateGetParams

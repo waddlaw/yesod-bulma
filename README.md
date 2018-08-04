@@ -37,8 +37,8 @@ $ stack exec paginator-example
 
 ### Yesod.Paginator.Bulma
 
-- [ ] simple
-- [ ] ellipsed
+- [x] simple
+- [x] ellipsed
 
 ### Yesod.Form
 

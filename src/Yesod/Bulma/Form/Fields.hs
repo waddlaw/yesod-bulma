@@ -3,7 +3,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
-module Yesod.Form.Bulma.Fields
+module Yesod.Bulma.Form.Fields
   ( bulmaIntField
   , bulmaTextField
   , bulmaEmailField
@@ -31,8 +31,8 @@ import           Text.Shakespeare.I18N    (RenderMessage, SomeMessage (..))
 import           Yesod.Core               (HandlerSite)
 import           Yesod.Core.Types         (HandlerFor, WidgetFor)
 import           Yesod.Core.Widget        (handlerToWidget, whamlet)
-import           Yesod.Form.Bulma.Class
-import           Yesod.Form.Bulma.Utils   (addStylesheet')
+import           Yesod.Bulma.Class
+import           Yesod.Bulma.Utils   (addStylesheet')
 import           Yesod.Form.Fields        (FormMessage (..), Option (..),
                                            OptionList (..), Textarea (..),
                                            optionsPairs)

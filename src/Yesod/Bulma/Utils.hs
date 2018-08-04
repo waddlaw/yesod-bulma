@@ -1,12 +1,24 @@
 {-# LANGUAGE TypeFamilies #-}
-module Yesod.Form.Bulma.Utils
+module Yesod.Bulma.Utils
   ( addStylesheet'
   , addScript'
+  , addBulmaResource
   )
 where
 
-import           Data.Text  (Text)
+import           Data.Text         (Text)
+import           Yesod.Bulma.Class
 import           Yesod.Core
+
+addBulmaResource
+  :: ( YesodBulma site
+     , HandlerSite m ~ site
+     , MonadWidget m
+     )
+  => m ()
+addBulmaResource = do
+  addStylesheet' urlBulmaCss
+  addScript' urlFontawesomeJs
 
 addStylesheet'
   :: (MonadWidget m, HandlerSite m ~ site)

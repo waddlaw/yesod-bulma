@@ -3,9 +3,8 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
 {-# LANGUAGE TypeFamilies          #-}
-module Yesod.Form.Bulma
-  ( module Yesod.Form.Bulma.Fields
-  , module Yesod.Form.Bulma.Class
+module Yesod.Bulma.Form
+  ( module Yesod.Bulma.Form.Fields
   , renderBulma
   , bulmaSubmit
   , BulmaSubmit(..)
@@ -16,10 +15,10 @@ module Yesod.Form.Bulma
 import           Data.Bifunctor
 import           Data.Text               (Text)
 import           Text.Shakespeare.I18N
+import           Yesod.Bulma.Class
+import           Yesod.Bulma.Form.Fields
+import           Yesod.Bulma.Utils
 import           Yesod.Core
-import           Yesod.Form.Bulma.Class
-import           Yesod.Form.Bulma.Fields
-import           Yesod.Form.Bulma.Utils
 import           Yesod.Form.Functions
 import           Yesod.Form.Types
 
@@ -38,8 +37,7 @@ renderBulma formLayout aform fragment = do
   let
     views = views' []
     widget = do
-      addStylesheet' urlBulmaCss
-      addScript' urlFontawesomeJs
+      addBulmaResource
       _cancelId <- newIdent
       [whamlet| $newline never
         #{fragment}
