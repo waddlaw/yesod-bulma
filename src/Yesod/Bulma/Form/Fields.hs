@@ -28,11 +28,11 @@ import           Data.Text.Encoding.Error (lenientDecode)
 import           Data.Text.Read           (decimal, signed)
 import qualified Text.Email.Validate      as Email
 import           Text.Shakespeare.I18N    (RenderMessage, SomeMessage (..))
+import           Yesod.Bulma.Class
+import           Yesod.Bulma.Utils        (addStylesheet')
 import           Yesod.Core               (HandlerSite)
 import           Yesod.Core.Types         (HandlerFor, WidgetFor)
 import           Yesod.Core.Widget        (handlerToWidget, whamlet)
-import           Yesod.Bulma.Class
-import           Yesod.Bulma.Utils   (addStylesheet')
 import           Yesod.Form.Fields        (FormMessage (..), Option (..),
                                            OptionList (..), Textarea (..),
                                            optionsPairs)
