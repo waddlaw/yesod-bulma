@@ -35,7 +35,7 @@ import           Yesod.Core.Types         (HandlerFor, WidgetFor)
 import           Yesod.Core.Widget        (handlerToWidget, whamlet)
 import           Yesod.Form.Fields        (FormMessage (..), Option (..),
                                            OptionList (..), Textarea (..),
-                                           optionsPairs)
+                                           optionsPairs, selectFieldHelper)
 import           Yesod.Form.Functions     (parseHelper)
 import           Yesod.Form.Types         (Enctype (..), Field (..))
 
@@ -272,45 +272,3 @@ bulmaSelectField = selectFieldHelper
     [whamlet| $newline never
       <option value=#{value} :isSel:selected>#{text}
     |]) -- inside
-
--- port from Yesod.Form.Fields
-selectFieldHelper
-  :: ( Eq a
-     , RenderMessage site FormMessage
-     )
-  => (Text -> Text -> [(Text, Text)] -> WidgetFor site () -> WidgetFor site ())
-  -> (Text -> Text -> Bool -> WidgetFor site ())
-  -> (Text -> Text -> [(Text, Text)] -> Text -> Bool -> Text -> WidgetFor site ())
-  -> HandlerFor site (OptionList a)
-  -> Field (HandlerFor site) a
-selectFieldHelper outside onOpt inside opts' = Field
-  { fieldParse   = \x _ -> do
-    opts <- opts'
-    return $ selectParser opts x
-  , fieldView    = \theId name attrs val isReq -> do
-    opts <- olOptions <$> handlerToWidget opts'
-    outside theId name attrs $ do
-      unless isReq $ onOpt theId name $ notElem (render opts val) $ map
-        optionExternalValue
-        opts
-      forM_ opts $ \opt -> inside
-        theId
-        name
-        ((if isReq then (("required", "required") :) else id) attrs)
-        (optionExternalValue opt)
-        (render opts val == optionExternalValue opt)
-        (optionDisplay opt)
-  , fieldEnctype = UrlEncoded
-  }
-  where
-    render _    (Left  _) = ""
-    render opts (Right a) = maybe "" optionExternalValue $ listToMaybe $ filter
-      ((== a) . optionInternalValue)
-      opts
-    selectParser _    []      = Right Nothing
-    selectParser opts (s : _) = case s of
-      ""     -> Right Nothing
-      "none" -> Right Nothing
-      x      -> case olReadExternal opts x of
-        Nothing -> Left $ SomeMessage $ MsgInvalidEntry x
-        Just y  -> Right $ Just y
